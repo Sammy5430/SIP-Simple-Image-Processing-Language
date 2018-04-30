@@ -31,7 +31,7 @@ reserved = {
 tokens = (
     'INT', 'FLOAT',
     'EQUALS', 'ID', 'LBRACE', 'RBRACE', 'EQUALS', 'DOT',
-    'COMMA', 'LPAREN', 'RPAREN', 'STRING'
+    'COMMA', 'LPAREN', 'RPAREN', 'STRING', 'METHOD'
 )
 
 # Basic Regular Expressions
