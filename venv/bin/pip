@@ -1,4 +1,4 @@
-#!C:\Users\Samue\Documents\GitHub\SIP-Simple-Image-Processing-Language\venv\Scripts\python.exe
+#!/Users/Graciany/Desktop/SIP-Simple-Image-Processing-Language/venv/bin/python
 # EASY-INSTALL-ENTRY-SCRIPT: 'pip==9.0.1','console_scripts','pip'
 __requires__ = 'pip==9.0.1'
 import re

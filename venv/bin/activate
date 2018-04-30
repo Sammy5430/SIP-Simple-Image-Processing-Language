@@ -37,11 +37,11 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\Samue\Documents\GitHub\SIP-Simple-Image-Processing-Language\venv"
+VIRTUAL_ENV="/Users/Graciany/Desktop/SIP-Simple-Image-Processing-Language/venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
-PATH="$VIRTUAL_ENV/Scripts:$PATH"
+PATH="$VIRTUAL_ENV/bin:$PATH"
 export PATH
 
 # unset PYTHONHOME if set

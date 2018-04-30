@@ -1,4 +1,4 @@
-#!C:\Users\Samue\Documents\GitHub\SIP-Simple-Image-Processing-Language\venv\Scripts\python.exe
+#!/Users/Graciany/Desktop/SIP-Simple-Image-Processing-Language/venv/bin/python
 # See http://cens.ioc.ee/projects/f2py2e/
 from __future__ import division, print_function
 
