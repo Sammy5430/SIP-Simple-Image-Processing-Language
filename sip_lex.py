@@ -48,7 +48,7 @@ tokens = [
     'COMMA', 'LPAREN', 'RPAREN', 'STRING', 'METHOD', 'LIST', 'STRING'
 ] + list(reserved)
 
-print(tokens)
+# print(tokens)
 
 # Declaration of Basic Regular Expressions
 t_EQUALS = r'\='
@@ -149,17 +149,17 @@ def t_error(t):
 
 # Lexer
 lexer = lex.lex()
-
-test1 = "greyScale translate readImage medium rotate low high \"Hello\" \'poop\'"
-test2 = "img.rotate(right)"
-test3 = "hello = readImage(\"Desktop\")"
-
-lexer.input(test3)
+#
+# test1 = "greyScale translate readImage medium rotate low high \"Hello\" \'poop\'"
+# test2 = "img.rotate(right)"
+# test3 = "hello = readImage(\"Desktop\")"
+#
+# lexer.input(test3)
 
 
 # Looping for input
-while True:
-    tok = lexer.token()
-    if not tok:
-        break
-    print(tok)
+# while True:
+#     tok = lexer.token()
+#     if not tok:
+#         break
+#     print(tok)

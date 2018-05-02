@@ -1,0 +1,93 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    COMMA
+    DIRECTION
+    DOT
+    EQUALS
+    FLOAT
+    INT
+    LCURLYB
+    LEVEL
+    LIST
+    LPAREN
+    METHOD
+    METHOD_1P
+    METHOD_2P
+    METHOD_NO
+    METHOD_NP
+    RCURLYB
+    RPAREN
+    STRING
+
+Grammar
+
+Rule 0     S' -> assignment
+Rule 1     assignment -> ID = ID
+
+Terminals, with rules where they appear
+
+=                    : 1
+COMMA                : 
+DIRECTION            : 
+DOT                  : 
+EQUALS               : 
+FLOAT                : 
+ID                   : 1 1
+INT                  : 
+LCURLYB              : 
+LEVEL                : 
+LIST                 : 
+LPAREN               : 
+METHOD               : 
+METHOD_1P            : 
+METHOD_2P            : 
+METHOD_NO            : 
+METHOD_NP            : 
+RCURLYB              : 
+RPAREN               : 
+STRING               : 
+error                : 
+
+Nonterminals, with rules where they appear
+
+assignment           : 0
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . assignment
+    (1) assignment -> . ID = ID
+
+    ID              shift and go to state 2
+
+    assignment                     shift and go to state 1
+
+state 1
+
+    (0) S' -> assignment .
+
+
+
+state 2
+
+    (1) assignment -> ID . = ID
+
+    =               shift and go to state 3
+
+
+state 3
+
+    (1) assignment -> ID = . ID
+
+    ID              shift and go to state 4
+
+
+state 4
+
+    (1) assignment -> ID = ID .
+
+    $end            reduce using rule 1 (assignment -> ID = ID .)
+
