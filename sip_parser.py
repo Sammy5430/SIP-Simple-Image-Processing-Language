@@ -46,7 +46,7 @@ def p_tranf_methods(t):
     t[0] = t[1]
     t[3] = t[3][1:-1]
 
-    if len(t) > 3 and isinstance(t[3], float):
+    if len(t) > 4 and isinstance(t[3], float) and isinstance(t[4], float):
         if t[1].lower() == "resize".lower():
             # Insert resize method below
             pass #comment this when done
@@ -55,7 +55,7 @@ def p_tranf_methods(t):
             # Insert translate method below
             pass  # comment this when done
 
-    if len(t) > 2 and isinstance(t[3], str):
+    if len(t) > 3 and isinstance(t[3], str):
         if t[1].lower() == "rotate".lower():
             # Insert rotate method below
             pass  # comment this when done
@@ -127,6 +127,7 @@ def p_plotting_methods(t):
     t[0] = t[1]
 
     if len(t) > 3:
+        t[3] = t[3][1:-1]
         if t[1].lower() == "show".lower():
             # Insert show method with title parameter below
             pass  # comment this when done
