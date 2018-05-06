@@ -32,7 +32,7 @@ import sys
 reserved = {
     'METHOD_NP': ['greyScale', 'sepia', 'getR',
                   'getG', 'getB', 'getEdges', 'segmentation'],
-    'METHOD_1P': ['enhance', 'sharpen', 'blur', 'denoise', 'rotate'],
+    'METHOD_1P': ['enhance', 'sharpen', 'blur', 'denoise', 'rotate', 'show'],
     'METHOD_2P': ['translate', 'resize'],
     'METHOD_NO': ['readImage'],
     'LEVEL': ['low', 'medium', 'high'],
@@ -43,21 +43,21 @@ reserved = {
 
 # tokens
 tokens = [
-    'INT', 'FLOAT',
-    'EQUALS', 'ID', 'LCURLYB', 'RCURLYB', 'EQUALS', 'DOT',
-    'COMMA', 'LPAREN', 'RPAREN', 'STRING', 'METHOD', 'LIST', 'STRING'
+    'INT',
+    'EQUALS', 'ID', 'LCB', 'RCB', 'DOT',
+    'COMMA', 'LP', 'RP', 'STRING'
 ] + list(reserved)
 
 # print(tokens)
 
 # Declaration of Basic Regular Expressions
 t_EQUALS = r'\='
-t_LCURLYB = r'\{'
-t_RCURLYB = r'\}'
+t_LCB = r'\{'
+t_RCB = r'\}'
 t_DOT = r'\.'
 t_COMMA = r'\,'
-t_LPAREN = r'\('
-t_RPAREN = r'\)'
+t_LP = r'\('
+t_RP = r'\)'
 
 # SIP Regular Expressions Patterns
 reg_method_np = re.compile('|'.join(reserved['METHOD_NP']))
@@ -99,10 +99,10 @@ def t_DIRECTION(t):
 
 # Generic Regular Expressions
 
-def t_FLOAT(t):
-    r'\d+\.\d'
-    t.value = float(t.value)
-    return t
+# def t_FLOAT(t):
+#     r'\d+\.\d'
+#     t.value = float(t.value)
+#     return t
 
 def t_INT(t):
     r'\d+'
@@ -148,7 +148,7 @@ def t_error(t):
     t.lexer.skip(1)
 
 # Lexer
-lexer = lex.lex()
+lexer = lex.lex(reflags=re.UNICODE|re.IGNORECASE)
 #
 # test1 = "greyScale translate readImage medium rotate low high \"Hello\" \'poop\'"
 # test2 = "img.rotate(right)"

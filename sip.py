@@ -2,7 +2,8 @@ import sys
 import sip_parser
 
 sipParser = sip_parser.getparser()
-gra = input('SIP>')
+while True:
+    gra = input('SIP >>')
+    sipParser.parse(gra)
 
-sipParser.parse(gra)
 
