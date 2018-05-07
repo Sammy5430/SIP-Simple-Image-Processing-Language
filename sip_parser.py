@@ -6,12 +6,142 @@ import os
 import numpy
 import sys
 tokens = siplex.tokens
+import cv2
 
 #sip variables:
 images = {}
 
-# Parsing rules
+# ===========================================================================================
+# METHODS
+# ===========================================================================================
 
+def p_method(p):
+    '''method : classifier
+                | upload_methods
+                | transf_methods
+                | filtering_methods
+                | color_methods
+                | feature_extraction_methods
+                | plotting_methods
+                | special_method'''
+
+    p[0] = p[1]
+
+def p_upload_methods(t):
+    '''upload_methods : UPLOAD_COMMAND '(' PATH ')' '''
+
+    t[0] = t[1]
+    t[3] = t[3][1:-1]
+
+    if t[1].lower() == "uploadImage".lower():
+        global imagePath, currentImage
+        imagePath = t[3]
+        currentImage = cv2.imread(imagePath)
+        print("Image uploaded")
+
+def p_tranf_methods(t):
+    '''transf_methods : TRANSFORM_COMMAND '(' FLOAT, FLOAT ')'
+                        | TRANSFORM_COMMAND '(' ID ')' '''
+
+    t[0] = t[1]
+    t[3] = t[3][1:-1]
+
+    if len(t) > 4 and isinstance(t[3], float) and isinstance(t[4], float):
+        if t[1].lower() == "resize".lower():
+            # Insert resize method below
+            pass #comment this when done
+
+        if t[1].lower() == "translate".lower():
+            # Insert translate method below
+            pass  # comment this when done
+
+    if len(t) > 3 and isinstance(t[3], str):
+        if t[1].lower() == "rotate".lower():
+            # Insert rotate method below
+            pass  # comment this when done
+
+def p_filtering_methods(t):
+    '''filtering_methods : FILTERING_COMMAND '(' STRING ')' '''
+
+    t[0] = t[1]
+    t[3] = t[3][1:-1]
+
+    if len(t) > 2 and isinstance(t[3], str) and (t[3] == "medium" or t[3] == "low" or t[3] == "high"):
+        if t[1].lower() == "enhance".lower():
+            # Insert enhance method below
+            pass  # comment this when done
+
+        if t[1].lower() == "sharpen".lower():
+            # Insert sharpen method below
+            pass  # comment this when done
+
+        if t[1].lower() == "blur".lower():
+            # Insert blur method below
+            pass  # comment this when done
+
+        if t[1].lower() == "denoise".lower():
+            # Insert denoise method below
+            pass  # comment this when done
+
+def p_color_methods(t):
+    '''color_methods : COLOR_COMMAND '(' ')' ''' #ADD TINT METHOD IF DECIDED TO DO SO
+
+    t[0] = t[1]
+
+    if t[1].lower() == "greyScale".lower():
+        # Insert greyscale method below
+        pass  # comment this when done
+
+    if t[1].lower() == "sepia".lower():
+        # Insert sepia method below
+        pass  # comment this when done
+
+    if t[1].lower() == "getR".lower():
+        # Insert getR method below
+        pass  # comment this when done
+
+    if t[1].lower() == "getG".lower():
+        # Insert getG method below
+        pass  # comment this when done
+
+    if t[1].lower() == "getB".lower():
+        # Insert getB method below
+        pass  # comment this when done
+
+def p_feature_extraction_methods(t):
+    '''feature_extraction_methods : FEATURE_EXTRACTION_COMMAND '(' ')' '''
+
+    t[0] = t[1]
+
+    if t[1].lower() == "getEdges".lower():
+        # Insert getEdges method below
+        pass  # comment this when done
+
+    if t[1].lower() == "segmentation".lower():
+        # Insert segmentation method below
+        pass  # comment this when done
+
+def p_plotting_methods(t):
+    '''plotting_methods : PLOTTING_COMMAND '(' ID ')' ''' # ID or string?
+
+    t[0] = t[1]
+
+    if len(t) > 3:
+        t[3] = t[3][1:-1]
+        if t[1].lower() == "show".lower():
+            # Insert show method with title parameter below
+            pass  # comment this when done
+
+    else:
+        if t[1].lower() == "show".lower():
+            # Insert show method without title parameter below
+            pass  # comment this when done
+
+#need to add special bracket format
+
+# ===========================================================================================
+# Parsing rules
+# ===========================================================================================
 
 def p_statement(p):
     '''statement : method
@@ -81,6 +211,7 @@ def p_method_2p(p):
 
 def p_img_assignment(p):
     '''img_assignment : ID EQUALS ID'''
+    # if isinstance((p[1], p[2], p[3]), image):
     p[0] = (p[1], p[2], p[3])
     # global images
     # images[p[1]] = p[3]
