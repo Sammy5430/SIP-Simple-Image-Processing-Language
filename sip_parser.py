@@ -42,15 +42,16 @@ def p_block_method(p):
     '''block_method : method_np
                 | method_1p
                 | method_2p'''
-    # p[0] = p[1]
+    p[0] = p[1]
 
 def p_method_list(p):
     '''method_list : block_method
                      | method_list'''
-    if len(p) > 2:
-        p[0] = (p[1], p[3])
-    else:
-        p[0] = p[1]
+    # if len(p) >= 2:
+    #     p[0] = (p[1], p[3])
+    # else:
+    print('Method List')
+    p[0] = p[1]
 
 
 def p_method_no(p):
