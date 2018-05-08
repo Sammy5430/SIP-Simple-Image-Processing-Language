@@ -37,8 +37,6 @@ reserved = {
     'METHOD_NO': ['readImage'],
     'LEVEL': ['low', 'medium', 'high'],
     'DIRECTION': ['right', 'left'],
-
-
 }
 
 # tokens
@@ -99,10 +97,10 @@ def t_DIRECTION(t):
 
 # Generic Regular Expressions
 
-# def t_FLOAT(t):
-#     r'\d+\.\d'
-#     t.value = float(t.value)
-#     return t
+def t_FLOAT(t):
+    r'\d+\.\d'
+    t.value = float(t.value)
+    return t
 
 def t_INT(t):
     r'\d+'
