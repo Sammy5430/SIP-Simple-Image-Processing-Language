@@ -45,7 +45,7 @@ reserved = {
 tokens = [
     'INT',
     'EQUALS', 'ID', 'LCB', 'RCB', 'DOT',
-    'COMMA', 'LP', 'RP', 'STRING'
+    'COMMA', 'LP', 'RP', 'STRING', 'SEMI'
 ] + list(reserved)
 
 # print(tokens)
@@ -58,6 +58,7 @@ t_DOT = r'\.'
 t_COMMA = r'\,'
 t_LP = r'\('
 t_RP = r'\)'
+t_SEMI = r';'
 
 # SIP Regular Expressions Patterns
 reg_method_np = re.compile('|'.join(reserved['METHOD_NP']))
