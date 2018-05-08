@@ -28,7 +28,6 @@ def p_statement(p):
                     | SIP_method_block
                     | empty
                    '''
-    print('poop')
     p[0] = p[1]
     print(p[0])
     print('Origin')
