@@ -127,11 +127,6 @@ def threshold(im):
     thresh = s_max[0]
     return ((im > thresh) * 255).astype("uint8")
 
-<<<<<<< HEAD
-im = plt.imread("DT.jpg")
-gray = gaussian(im, 'LOW')
-plt.imshow(gray)
-=======
 def red(im):
     im[:, :, 1] = 0  # Zero out contribution from green
     im[:, :, 2] = 0  # Zero out contribution from blue
@@ -152,7 +147,7 @@ def green(im):
 # plt.imshow(gray)
 # im = grayscale(im, weights=np.c_[0.2989, 0.5870, 0.1140])
 # plt.imshow(im)
->>>>>>> parser
+
 #sharp = canny(im, 'LOW')
 # plt.imshow(im, cmap='gray')
 #plt.imshow(sharp)
@@ -161,8 +156,4 @@ plti(sharpen(im))
 gray_im = to_grayscale(im)
 t = otsu_threshold(gray_im)
 plti(simple_threshold(gray_im, t), cmap='Greys')"""
-<<<<<<< HEAD
-plt.show()
-=======
 # plt.show()
->>>>>>> parser
