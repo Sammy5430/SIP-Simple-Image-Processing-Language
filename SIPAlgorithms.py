@@ -42,11 +42,11 @@ def _convolve_all_colours(im, window):
         im_conv_d = convolve2d(im[:,:,d], window, mode="same", boundary="symm")
         ims.append(im_conv_d)
 
-    im_conv = np.stack(ims, axis=0).astype("uint8")
+    im_conv = np.stack(ims, axis=2).astype("uint8")
     return im_conv
 
 def gaussian(im, level, size = 13):
-    intensity = {'HIGH':(65,17), 'MEDIUM':(33,13), "LOW":(9,9) }
+    intensity = {'HIGH':(65,17), 'MEDIUM':(33,13), 'LOW':(9,9) }
     try:
         sigma = intensity[level][0]
         n = intensity[level][1]
@@ -128,7 +128,7 @@ def threshold(im):
     return ((im > thresh) * 255).astype("uint8")
 
 im = plt.imread("DT.jpg")
-gray = sharpen(im)
+gray = gaussian(im, 'LOW')
 plt.imshow(gray)
 #sharp = canny(im, 'LOW')
 #plt.imshow(sharp, cmap='gray')
