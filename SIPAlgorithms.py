@@ -30,7 +30,7 @@ def sharpen(im):
 
 def canny(im, level):
     intensity = {'HIGH':1, 'MEDIUM':3, "LOW":6 }
-    edges = feature.canny(gray, sigma=intensity[level])
+    edges = feature.canny(im, sigma=intensity[level])
     return edges
 
 def _convolve_all_colours(im, window):
@@ -76,7 +76,7 @@ def plti(im, h=8, **kwargs):
     plt.axis('off')
 
 
-def grayscale(im, weights = np.c_[0.2989, 0.5870, 0.1140]):
+def grayscale(im, weights=np.c_[0.2989, 0.5870, 0.1140]):
     return np.dot(im[...,:3], [0.299, 0.587, 0.114])
 
 def otsu_threshold(im):
@@ -127,15 +127,32 @@ def threshold(im):
     thresh = s_max[0]
     return ((im > thresh) * 255).astype("uint8")
 
-im = plt.imread("DT.jpg")
-gray = sharpen(im)
-plt.imshow(gray)
+def red(im):
+    im[:, :, 1] = 0  # Zero out contribution from green
+    im[:, :, 2] = 0  # Zero out contribution from blue
+    return im
+
+def blue(im):
+    im[:, :, 1] = 0  # Zero out contribution from green
+    im[:, :, 0] = 0  # Zero out contribution from red
+    return im
+
+def green(im):
+    im[:, :, 0] = 0  # Zero out contribution from blue
+    im[:, :, 2] = 0  # Zero out contribution from red
+    return im
+
+# im = plt.imread("test.png")
+# gray = sharpen(im)
+# plt.imshow(gray)
+# im = grayscale(im, weights=np.c_[0.2989, 0.5870, 0.1140])
+# plt.imshow(im)
 #sharp = canny(im, 'LOW')
-#plt.imshow(sharp, cmap='gray')
+# plt.imshow(im, cmap='gray')
 #plt.imshow(sharp)
 """
 plti(sharpen(im))
 gray_im = to_grayscale(im)
 t = otsu_threshold(gray_im)
 plti(simple_threshold(gray_im, t), cmap='Greys')"""
-plt.show()
+# plt.show()

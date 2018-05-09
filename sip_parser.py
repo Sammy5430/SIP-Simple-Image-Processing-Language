@@ -6,9 +6,14 @@ import numpy as np
 import sys
 from scipy.signal import convolve2d
 import matplotlib.pylab as plt
+import matplotlib.image as mpimg
 # from skimage import feature (for now)
 from scipy import ndimage
 import re
+from SIPAlgorithms import grayscale
+from SIPAlgorithms import red
+from SIPAlgorithms import blue
+from SIPAlgorithms import green
 
 
 tokens = siplex.tokens
@@ -25,118 +30,118 @@ images = {}
 def p_statement(p):
     '''statement : method
                     | assignment
-                    | SIP_method_block
                     | empty
                    '''
     p[0] = p[1]
-    print(p[0])
-    print('Origin')
-
-    if p[0] == 'SIP':
-        print("Hi")
+    print('SIP Statement: {0}'.format(p[0]))
 
 def p_assignment(p):
     '''assignment : img_assignment
                   | method_assignment
                     '''
     p[0] = p[1]
+    print('Assignment: {0}'.format(p[0]))
 
 def p_method(p):
-    '''method : ID DOT method_np
-                | ID DOT method_1p
-                | ID DOT method_2p
+    '''method : method_np
+                | method_1p
+                | method_2p
                 | method_no'''
 
-    # if len(p) > 2:
-    #     p[0] = (p[1], p[3])
-    #     print("Hello")
-    #     print(p[0])
-    #     print("Hello")
-    # else:
-    #     p[0] = p[1]
-
-
-def p_block_method(p):
-    '''block_method : method_np
-                | method_1p
-                | method_2p'''
     p[0] = p[1]
-
-
-def p_method_list(p):
-    '''method_list : block_method
-                     | block_method method_list'''
-
-    if len(p) == 2:
-        p[0] = p[1]
-        print(len(p))
-        print(p[0])
-    elif len(p) == 3:
-        p[0] = (p[1], p[2])
-        print(len(p))
-        print(p[0])
-        print('hello')
-    elif len(p) == 4:
-        p[0] = (p[1], p[2], p[3])
-        print(len(p))
-        print(p[0])
-    else:
-        print('Method List')
-        p[0] = p[1]
-
+    print('Method: {0}'.format(p[0]))
 
 def p_method_no(p):
     '''method_no : METHOD_NO LP STRING RP '''
-    # p[0] = (p[1], p[2], p[3], p[4])
+    #'METHOD_NO': ['read']
     p[0] = (p[1],p[3])
-    if p[1] == "readImage":
-       print('Method with no object')
-
+    print('Method No Object: {0}'.format(p[0]))
 
 def p_method_np(p):
-    '''method_np : METHOD_NP LP RP '''
-    p[0] = p[1]
-    print('Method with no parameters')
+    '''method_np : ID DOT METHOD_NP LP RP '''
+    # 'METHOD_NP': ['greyScale', 'sepia', 'red','green', 'blue', 'edges', 'segmentation', 'show'],
+    p[0] = (p[3],p[1])
 
+    if p[3] == 'greyscale':
+        print("GreyScale")
+        images[p[1]] = grayscale(images[p[1]])
+        plt.imshow(images[p[1]],cmap="gray")
+        # Remove ticks from axis
+        plt.gca().get_xaxis().set_visible(False)
+        plt.gca().get_yaxis().set_visible(False)
+        plt.show()
+    elif p[3] == "show":
+        print('Executing Show')
+        plt.imshow(images[p[1]])
+        # Remove ticks from axis
+        plt.gca().get_xaxis().set_visible(False)
+        plt.gca().get_yaxis().set_visible(False)
+        plt.show()
+    elif p[3] == "red":
+        print('Executing Red')
+        images[p[1]] = red(images[p[1]])
+        plt.imshow(images[p[1]])
+        # Remove ticks from axis
+        plt.gca().get_xaxis().set_visible(False)
+        plt.gca().get_yaxis().set_visible(False)
+        plt.show()
+    elif p[3] == "blue":
+        print('Executing Blue')
+        images[p[1]] = blue(images[p[1]])
+        plt.imshow(images[p[1]])
+        # Remove ticks from axis
+        plt.gca().get_xaxis().set_visible(False)
+        plt.gca().get_yaxis().set_visible(False)
+        plt.show()
+    elif p[3] == "green":
+        print('Executing Green')
+        images[p[1]] = green(images[p[1]])
+        plt.imshow(images[p[1]])
+        # Remove ticks from axis
+        plt.gca().get_xaxis().set_visible(False)
+        plt.gca().get_yaxis().set_visible(False)
+        plt.show()
+    print('Method No Parameter: {0}'.format(p[0]))
 
 def p_method_1p(p):
-    '''method_1p : METHOD_1P LP DIRECTION RP
-                   | METHOD_1P LP LEVEL RP
-                   | METHOD_1P LP STRING RP'''
-    p[0] = (p[1], p[3])
-    print(p[0])
-    if p[1] == "show":
-        print(p[0])
-    print('Method with 1 parameter')
+    '''method_1p : ID DOT METHOD_1P LP DIRECTION RP
+                   | ID DOT METHOD_1P LP LEVEL RP
+                   | ID DOT METHOD_1P LP STRING RP'''
+    # 'METHOD_1P': ['enhance', 'sharpen', 'blur', 'denoise', 'rotate'],
+    global images
+    p[0] = (p[3], p[5])
+
+    print('Method 1 Parameter: {0}'.format(p[0]))
 
 def p_method_2p(p):
-    '''method_2p : METHOD_2P LP INT COMMA INT RP '''
-    p[0] = (p[1], p[3], p[5])
-    print('Method with two parameters')
+    '''method_2p : ID DOT METHOD_2P LP INT COMMA INT RP '''
+    #'METHOD_2P': ['translate', 'resize'],
+    p[0] = (p[3], p[5],p[7])
+    print('Method 2 Parameter: {0}'.format(p[0]))
 
 
 def p_img_assignment(p):
     '''img_assignment : ID EQUALS ID'''
-    # if isinstance((p[1], p[2], p[3]), image):
-    p[0] = (p[1], p[2], p[3])
+    p[0] = (p[2], p[1], p[3])
     # global images
-    # images[p[1]] = p[3]
-    print('IMG Assignment')
+    images[p[1]] = p[3]
+    print('IMG Assignment: {0}'.format(p[0]))
 
 def p_method_assignment(p):
-    '''method_assignment : ID EQUALS method'''
-    p[0] = (p[1], p[2], p[3])
+    '''method_assignment : ID EQUALS method_no'''
+    p[0] = (p[2], p[1], p[3])
     global images
     print(p[0])
-    if p[3][0] == "readImage":
-        images[p[1]] = plt.imread(p[3][1].replace('"', '')) # Need to use the replace method to remove quotes from string
-    print('Method Assignment')
-
-def p_SIP_method_block(p):
-    '''SIP_method_block : ID LCB  method_list RCB '''
-    p[0] = ('SIP', p[1], p[3])
-    print(p[3])
-    print('Method Block')
+    if p[3][0] == "read":
+        # Need to use the replace method to remove quotes from string
+        path = p[3][1].replace('"', '')
+        images[p[1]] = plt.imread(path)
+        plt.imshow(images[p[1]])
+        # Remove ticks from axis
+        plt.gca().get_xaxis().set_visible(False)
+        plt.gca().get_yaxis().set_visible(False)
+        plt.show()
+    print('Method Assignment: {0}'.format(p[0]))
 
 def p_empty(p):
     '''empty :  '''

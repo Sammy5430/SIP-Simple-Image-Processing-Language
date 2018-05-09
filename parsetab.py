@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'COMMA DIRECTION DOT EQUALS ID INT LCB LEVEL LP METHOD_1P METHOD_2P METHOD_NO METHOD_NP RCB RP SEMI STRINGstatement : method\n                    | assignment\n                    | SIP_method_block\n                    | empty\n                   assignment : img_assignment\n                  | method_assignment\n                    method : ID DOT method_np\n                | ID DOT method_1p\n                | ID DOT method_2p\n                | method_noblock_method : method_np\n                | method_1p\n                | method_2pmethod_list : block_method\n                     | block_method method_listmethod_no : METHOD_NO LP STRING RP method_np : METHOD_NP LP RP method_1p : METHOD_1P LP DIRECTION RP\n                   | METHOD_1P LP LEVEL RP\n                   | METHOD_1P LP STRING RPmethod_2p : METHOD_2P LP INT COMMA INT RP img_assignment : ID EQUALS IDmethod_assignment : ID EQUALS methodSIP_method_block : ID LCB  method_list RCB empty :  '
+_lr_signature = 'COMMA DIRECTION DOT EQUALS ID INT LEVEL LP METHOD_1P METHOD_2P METHOD_NO METHOD_NP RP STRINGstatement : method\n                    | assignment\n                    | empty\n                   assignment : img_assignment\n                  | method_assignment\n                    method : method_np\n                | method_1p\n                | method_2p\n                | method_nomethod_no : METHOD_NO LP STRING RP method_np : ID DOT METHOD_NP LP RP method_1p : ID DOT METHOD_1P LP DIRECTION RP\n                   | ID DOT METHOD_1P LP LEVEL RP\n                   | ID DOT METHOD_1P LP STRING RPmethod_2p : ID DOT METHOD_2P LP INT COMMA INT RP img_assignment : ID EQUALS IDmethod_assignment : ID EQUALS method_noempty :  '
     
-_lr_action_items = {'ID':([0,13,],[6,26,]),'$end':([0,1,2,3,4,5,7,8,9,15,16,17,26,27,32,34,35,40,41,42,45,],[-25,0,-1,-2,-3,-4,-10,-5,-6,-7,-8,-9,-22,-23,-24,-16,-17,-18,-19,-20,-21,]),'METHOD_NO':([0,13,],[10,10,]),'DOT':([6,26,],[11,11,]),'LCB':([6,],[12,]),'EQUALS':([6,],[13,]),'LP':([10,18,19,20,],[14,29,30,31,]),'METHOD_NP':([11,12,22,23,24,25,35,40,41,42,45,],[18,18,18,-11,-12,-13,-17,-18,-19,-20,-21,]),'METHOD_1P':([11,12,22,23,24,25,35,40,41,42,45,],[19,19,19,-11,-12,-13,-17,-18,-19,-20,-21,]),'METHOD_2P':([11,12,22,23,24,25,35,40,41,42,45,],[20,20,20,-11,-12,-13,-17,-18,-19,-20,-21,]),'STRING':([14,30,],[28,38,]),'RCB':([21,22,23,24,25,33,35,40,41,42,45,],[32,-14,-11,-12,-13,-15,-17,-18,-19,-20,-21,]),'RP':([28,29,36,37,38,44,],[34,35,40,41,42,45,]),'DIRECTION':([30,],[36,]),'LEVEL':([30,],[37,]),'INT':([31,43,],[39,44,]),'COMMA':([39,],[43,]),}
+_lr_action_items = {'$end':([0,1,2,3,4,5,6,7,8,9,10,19,20,25,26,31,32,33,36,],[-18,0,-1,-2,-3,-6,-7,-8,-9,-4,-5,-16,-17,-10,-11,-12,-13,-14,-15,]),'ID':([0,14,],[11,19,]),'METHOD_NO':([0,14,],[12,12,]),'DOT':([11,],[13,]),'EQUALS':([11,],[14,]),'LP':([12,16,17,18,],[15,22,23,24,]),'METHOD_NP':([13,],[16,]),'METHOD_1P':([13,],[17,]),'METHOD_2P':([13,],[18,]),'STRING':([15,23,],[21,29,]),'RP':([21,22,27,28,29,35,],[25,26,31,32,33,36,]),'DIRECTION':([23,],[27,]),'LEVEL':([23,],[28,]),'INT':([24,34,],[30,35,]),'COMMA':([30,],[34,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'statement':([0,],[1,]),'method':([0,13,],[2,27,]),'assignment':([0,],[3,]),'SIP_method_block':([0,],[4,]),'empty':([0,],[5,]),'method_no':([0,13,],[7,7,]),'img_assignment':([0,],[8,]),'method_assignment':([0,],[9,]),'method_np':([11,12,22,],[15,23,23,]),'method_1p':([11,12,22,],[16,24,24,]),'method_2p':([11,12,22,],[17,25,25,]),'method_list':([12,22,],[21,33,]),'block_method':([12,22,],[22,22,]),}
+_lr_goto_items = {'statement':([0,],[1,]),'method':([0,],[2,]),'assignment':([0,],[3,]),'empty':([0,],[4,]),'method_np':([0,],[5,]),'method_1p':([0,],[6,]),'method_2p':([0,],[7,]),'method_no':([0,14,],[8,20,]),'img_assignment':([0,],[9,]),'method_assignment':([0,],[10,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -29,27 +29,20 @@ _lr_productions = [
   ("S' -> statement","S'",1,None,None,None),
   ('statement -> method','statement',1,'p_statement','sip_parser.py',26),
   ('statement -> assignment','statement',1,'p_statement','sip_parser.py',27),
-  ('statement -> SIP_method_block','statement',1,'p_statement','sip_parser.py',28),
-  ('statement -> empty','statement',1,'p_statement','sip_parser.py',29),
-  ('assignment -> img_assignment','assignment',1,'p_assignment','sip_parser.py',36),
-  ('assignment -> method_assignment','assignment',1,'p_assignment','sip_parser.py',37),
-  ('method -> ID DOT method_np','method',3,'p_method','sip_parser.py',42),
-  ('method -> ID DOT method_1p','method',3,'p_method','sip_parser.py',43),
-  ('method -> ID DOT method_2p','method',3,'p_method','sip_parser.py',44),
-  ('method -> method_no','method',1,'p_method','sip_parser.py',45),
-  ('block_method -> method_np','block_method',1,'p_block_method','sip_parser.py',57),
-  ('block_method -> method_1p','block_method',1,'p_block_method','sip_parser.py',58),
-  ('block_method -> method_2p','block_method',1,'p_block_method','sip_parser.py',59),
-  ('method_list -> block_method','method_list',1,'p_method_list','sip_parser.py',64),
-  ('method_list -> block_method method_list','method_list',2,'p_method_list','sip_parser.py',65),
-  ('method_no -> METHOD_NO LP STRING RP','method_no',4,'p_method_no','sip_parser.py',82),
-  ('method_np -> METHOD_NP LP RP','method_np',3,'p_method_np','sip_parser.py',90),
-  ('method_1p -> METHOD_1P LP DIRECTION RP','method_1p',4,'p_method_1p','sip_parser.py',96),
-  ('method_1p -> METHOD_1P LP LEVEL RP','method_1p',4,'p_method_1p','sip_parser.py',97),
-  ('method_1p -> METHOD_1P LP STRING RP','method_1p',4,'p_method_1p','sip_parser.py',98),
-  ('method_2p -> METHOD_2P LP INT COMMA INT RP','method_2p',6,'p_method_2p','sip_parser.py',106),
-  ('img_assignment -> ID EQUALS ID','img_assignment',3,'p_img_assignment','sip_parser.py',112),
-  ('method_assignment -> ID EQUALS method','method_assignment',3,'p_method_assignment','sip_parser.py',120),
-  ('SIP_method_block -> ID LCB method_list RCB','SIP_method_block',4,'p_SIP_method_block','sip_parser.py',129),
-  ('empty -> <empty>','empty',0,'p_empty','sip_parser.py',135),
+  ('statement -> empty','statement',1,'p_statement','sip_parser.py',28),
+  ('assignment -> img_assignment','assignment',1,'p_assignment','sip_parser.py',34),
+  ('assignment -> method_assignment','assignment',1,'p_assignment','sip_parser.py',35),
+  ('method -> method_np','method',1,'p_method','sip_parser.py',41),
+  ('method -> method_1p','method',1,'p_method','sip_parser.py',42),
+  ('method -> method_2p','method',1,'p_method','sip_parser.py',43),
+  ('method -> method_no','method',1,'p_method','sip_parser.py',44),
+  ('method_no -> METHOD_NO LP STRING RP','method_no',4,'p_method_no','sip_parser.py',50),
+  ('method_np -> ID DOT METHOD_NP LP RP','method_np',5,'p_method_np','sip_parser.py',58),
+  ('method_1p -> ID DOT METHOD_1P LP DIRECTION RP','method_1p',6,'p_method_1p','sip_parser.py',63),
+  ('method_1p -> ID DOT METHOD_1P LP LEVEL RP','method_1p',6,'p_method_1p','sip_parser.py',64),
+  ('method_1p -> ID DOT METHOD_1P LP STRING RP','method_1p',6,'p_method_1p','sip_parser.py',65),
+  ('method_2p -> ID DOT METHOD_2P LP INT COMMA INT RP','method_2p',8,'p_method_2p','sip_parser.py',75),
+  ('img_assignment -> ID EQUALS ID','img_assignment',3,'p_img_assignment','sip_parser.py',81),
+  ('method_assignment -> ID EQUALS method_no','method_assignment',3,'p_method_assignment','sip_parser.py',89),
+  ('empty -> <empty>','empty',0,'p_empty','sip_parser.py',100),
 ]
