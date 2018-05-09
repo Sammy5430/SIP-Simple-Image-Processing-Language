@@ -9,32 +9,13 @@ import re
 import sys
 
 # reserved Words
-# reserved = {
-#     'readImage': 'READ',
-#     'rotate': 'ROTATE',
-#     'resize': 'RESIZE',
-#     'translate': 'TRANSLATE',
-#     'enhance': 'ENHANCE',
-#     'sharpen': 'SHARPEN',
-#     'blur': 'BLUR',
-#     'denoise': 'DENOISE',
-#     'greyScale': 'GREY',
-#     'sepia': 'SEPIA',
-#     'getR': 'RED',
-#     'getG': 'GREEN',
-#     'getB': 'BLUE',
-#     'getEdges': 'EDGES',
-#     'segmentation': 'SEGMENTATION',
-#     'show': 'SHOW'
-#
-# }
 
 reserved = {
-    'METHOD_NP': ['greyScale', 'sepia', 'getR',
-                  'getG', 'getB', 'getEdges', 'segmentation'],
+    'METHOD_NP': ['greyScale', 'sepia', 'red',
+                  'green', 'blue', 'edges', 'segmentation', 'show'],
     'METHOD_1P': ['enhance', 'sharpen', 'blur', 'denoise', 'rotate'],
     'METHOD_2P': ['translate', 'resize'],
-    'METHOD_NO': ['readImage'],
+    'METHOD_NO': ['read'],
     'LEVEL': ['low', 'medium', 'high'],
     'DIRECTION': ['right', 'left'],
 
@@ -43,21 +24,19 @@ reserved = {
 
 # tokens
 tokens = [
-    'INT', 'FLOAT',
-    'EQUALS', 'ID', 'LCURLYB', 'RCURLYB', 'EQUALS', 'DOT',
-    'COMMA', 'LPAREN', 'RPAREN', 'STRING', 'METHOD', 'LIST', 'STRING'
+    'INT',
+    'EQUALS', 'ID', 'DOT',
+    'COMMA', 'LP', 'RP', 'STRING',
 ] + list(reserved)
 
-print(tokens)
+# print(tokens)
 
 # Declaration of Basic Regular Expressions
 t_EQUALS = r'\='
-t_LCURLYB = r'\{'
-t_RCURLYB = r'\}'
 t_DOT = r'\.'
 t_COMMA = r'\,'
-t_LPAREN = r'\('
-t_RPAREN = r'\)'
+t_LP = r'\('
+t_RP = r'\)'
 
 # SIP Regular Expressions Patterns
 reg_method_np = re.compile('|'.join(reserved['METHOD_NP']))
@@ -99,11 +78,6 @@ def t_DIRECTION(t):
 
 # Generic Regular Expressions
 
-def t_FLOAT(t):
-    r'\d+\.\d'
-    t.value = float(t.value)
-    return t
-
 def t_INT(t):
     r'\d+'
     try:
@@ -123,16 +97,6 @@ def t_ID(t):
     # t.type = reserved.get(t.value, 'ID')  # Check reserved words
     return t
 
-# def t_LIST(t):
-#     r'[(][-?0-9,]+[-?0-9][)]'
-#     t.type = 'LIST'
-#     return t
-
-# def t_METHOD(t):
-#     r'[a-zA-Z_][a-zA-Z_0-9]*[(][)]'
-#     t.type = 'METHOD'
-#     return t
-
 
 # Ignored characters
 t_ignore = " \t"
@@ -148,18 +112,18 @@ def t_error(t):
     t.lexer.skip(1)
 
 # Lexer
-lexer = lex.lex()
+lexer = lex.lex(reflags=re.UNICODE|re.IGNORECASE)
+#
 
-test1 = "greyScale translate readImage medium rotate low high \"Hello\" \'poop\'"
-test2 = "img.rotate(right)"
-test3 = "hello = readImage(\"Desktop\")"
-
-lexer.input(test3)
+# test1 = "img.rotate(right)"
+# test2 = "hello = readImage(\"Desktop\")"
+#
+# lexer.input(test2)
 
 
 # Looping for input
-while True:
-    tok = lexer.token()
-    if not tok:
-        break
-    print(tok)
+# while True:
+#     tok = lexer.token()
+#     if not tok:
+#         break
+#     print(tok)
