@@ -62,7 +62,6 @@ def gaussian(im, level, size = 13):
     a = np.asarray([[x**2 + y**2 for x in range(-nn,nn+1)] for y in range(-nn,nn+1)])
     gauss_win = np.exp(-a/(2*sigma**2))
     gauss_win /= np.sum(gauss_win)
-    print(gauss_win)
     return _convolve_all_colours(im, gauss_win)
 
 def threshold(im, level):
@@ -79,7 +78,7 @@ def threshold(im, level):
             img = _DynamicThreshold(im)
     return img
     
-def plti(im, h=8):
+def imshow(im, h=8):
     """
         Helper function to show an image.
     """
@@ -93,6 +92,19 @@ def plti(im, h=8):
         plt.imshow(im, cmap='gray')
     plt.axis('off')
 
+def imread(imageName):
+    try:
+        im = plt.imread(imageName)
+        extension = imageName.split('.')[1]
+        if(extension == 'png' ):
+            im = 255*im
+            im = im.astype(np.uint8)
+            return im
+        else:
+            return im
+    except Exception:
+        print(Exception)
+    
 
 def grayscale(im, weights=np.c_[0.2989, 0.5870, 0.1140]):
     return np.dot(im[...,:3], [0.299, 0.587, 0.114])
@@ -112,7 +124,9 @@ def green(im):
     im[:, :, 2] = 0  # Zero out contribution from red
     return im
 
-im = plt.imread("Lenna.png")
+im = imread("Lenna.png")
+im2 = imread("Lenna.jpg")
+
 """print(""+str(im.shape))
 gray = grayscale(im)
 print(""+str(gray.shape))
@@ -125,9 +139,7 @@ plti(im)"""
 # plt.imshow(im, cmap='gray')
 #plt.imshow(sharp)
 
+gauss = gaussian(im2, 'HIGH')
+imshow(gauss)
 
-gray_im = grayscale(im)
-edges = canny(gray_im, 'HIGH')
-plti(gray_im)
-plti(edges)
 plt.show()
