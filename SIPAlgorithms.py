@@ -56,6 +56,7 @@ def sharpen(im):
 
 
 def canny(im, level):
+    level = level.upper()
     intensity = {'HIGH': 1, 'MEDIUM': 3, "LOW": 6}
     edges = feature.canny(im, sigma=intensity[level])
     return edges
@@ -63,6 +64,7 @@ def canny(im, level):
 
 def gaussian(im, level, size=13):
     intensity = {'HIGH': (65, 17), 'MEDIUM': (33, 13), 'LOW': (9, 9)}
+    level = level.upper()
     try:
         sigma = intensity[level][0]
         n = intensity[level][1]
@@ -80,6 +82,7 @@ def threshold(im, level):
     """
         Dynamic threshold if level is not given, else uses level to theshold the image.
     """
+    level = level.upper()
     intensity = {'HIGH': 175, 'MEDIUM': 75, 'LOW': 25}
     if (level is None):
         img = _DynamicThreshold(im)
@@ -153,6 +156,7 @@ def sepia(im):
     return im
 
 def rotate(im, direction):
+    direction = direction.lower()
 
     d = {'right': -90, 'left': 90}
     # Default reshaping is true
