@@ -12,9 +12,9 @@ import sys
 
 reserved = {
     'METHOD_NP': ['greyScale', 'sepia', 'red',
-                  'green', 'blue', 'show','sharpen'],
-    'METHOD_1P': ['blur', 'rotate','edges'],
-    'METHOD_2P': ['translate', 'resize'],
+                  'green', 'blue', 'show','sharpen','invert'],
+    'METHOD_1P': ['blur', 'rotate','edges', 'save'],
+    'METHOD_2P': ['translate', 'resize','crop','spiral'],
     'METHOD_NO': ['read'],
     'LEVEL': ['low', 'medium', 'high'],
     'DIRECTION': ['right', 'left'],

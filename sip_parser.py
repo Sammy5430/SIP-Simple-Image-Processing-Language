@@ -1,15 +1,7 @@
 import ply.yacc as yacc
 import sip_lex as siplex
-# from scipy import stats
-import os
-import numpy as np
 import sys
-from scipy.signal import convolve2d
 import matplotlib.pylab as plt
-import matplotlib.image as mpimg
-# from skimage import feature (for now)
-from scipy import ndimage
-import re
 from SIPAlgorithms import grayscale
 from SIPAlgorithms import red
 from SIPAlgorithms import blue
@@ -18,11 +10,14 @@ from SIPAlgorithms import sepia
 from SIPAlgorithms import rotate
 from SIPAlgorithms import gaussian
 from SIPAlgorithms import sharpen
-from SIPAlgorithms import translate
 from SIPAlgorithms import re_size
 from SIPAlgorithms import canny
 from SIPAlgorithms import imshow
 from SIPAlgorithms import imread
+from SIPAlgorithms import invert
+from SIPAlgorithms import crop
+from SIPAlgorithms import spiral
+from SIPAlgorithms import saveimg
 
 
 
@@ -61,13 +56,15 @@ def p_method(p):
 
 def p_method_no(p):
     '''method_no : METHOD_NO LP STRING RP '''
-    #'METHOD_NO': ['read']
+
+
     p[0] = (p[1],p[3])
     # print('Method No Object: {0}'.format(p[0]))
 
 def p_method_np(p):
     '''method_np : ID DOT METHOD_NP LP RP '''
-    # 'METHOD_NP': ['greyScale', 'sepia', 'red','green', 'blue', 'edges', 'show'],
+
+
     p[0] = (p[3],p[1])
     global images
 
@@ -75,46 +72,59 @@ def p_method_np(p):
         print("ID Error")
         return p
 
+    copy = images[p[1]].copy()
+
     if p[3] == 'greyscale':
         # print("GreyScale")
-        images[p[1]] = grayscale(images[p[1]])
-        imshow(images[p[1]])
+        copy = grayscale(copy)
+        imshow(copy)
         plt.show()
 
     elif p[3] == "sepia":
         # print("Sepia")
-        images[p[1]] = sepia(images[p[1]])
-        imshow(images[p[1]])
+        copy = sepia(copy)
+        imshow(copy)
         plt.show()
 
     elif p[3] == "show":
         # print('Executing Show')
-        imshow(images[p[1]])
+        imshow(copy)
         plt.show()
 
     elif p[3] == "red":
         # print('Executing Red')
-        images[p[1]] = red(images[p[1]])
-        imshow(images[p[1]])
+        copy = red(copy)
+        imshow(copy)
         plt.show()
 
     elif p[3] == "blue":
         # print('Executing Blue')
-        images[p[1]] = blue(images[p[1]])
-        imshow(images[p[1]])
+        copy = blue(copy)
+        imshow(copy)
         plt.show()
 
     elif p[3] == "green":
         # print('Executing Green')
-        images[p[1]] = green(images[p[1]])
-        imshow(images[p[1]])
+        copy = green(copy)
+        imshow(copy)
         plt.show()
 
     elif p[3] == 'sharpen':
         # print('Sharpen')
-        images[p[1]] = sharpen(images[p[1]])
-        imshow(images[p[1]])
+        copy = sharpen(copy)
+        imshow(copy)
         plt.show()
+    elif p[3] == 'invert':
+        copy = invert(copy)
+        imshow(copy)
+        plt.show()
+
+    if p[3] != "show":
+        changes = input("Keep Changes? (y/n):")
+        if changes == "y":
+            images.update({p[1]: copy})
+        else:
+            return p
 
     # print('Method No Parameter: {0}'.format(p[0]))
 
@@ -122,37 +132,52 @@ def p_method_1p(p):
     '''method_1p : ID DOT METHOD_1P LP DIRECTION RP
                    | ID DOT METHOD_1P LP LEVEL RP
                    | ID DOT METHOD_1P LP STRING RP'''
-    # 'METHOD_1P': ['sharpen', 'blur', 'rotate'],
+
     global images
 
     if images.get(p[1]) is None:
         print("ID Error")
         return p
 
+    copy = images[p[1]].copy()
+
     p[0] = (p[3], p[5])
 
     if p[3] == 'blur':
         # print('Blur')
-        images[p[1]] = gaussian(images[p[1]], p[5])
-        imshow(images[p[1]])
+        copy = gaussian(copy, p[5])
+        imshow(copy)
         plt.show()
 
     elif p[3] == 'rotate':
         # print('Rotate')
-        images[p[1]] = rotate(images[p[1]], p[5])
-        imshow(images[p[1]])
+        copy = rotate(copy, p[5])
+        imshow(copy)
         plt.show()
 
     elif p[3] == 'edges':
         # print('Edges')
-        images[p[1]] = canny(images[p[1]],p[5])
-        imshow(images[p[1]])
+        copy = canny(copy, p[5])
+        imshow(copy)
         plt.show()
+
+    elif p[3] == 'save':
+        # print('Edges')
+        saveimg(copy, p[5].replace('"', ''))
+
+    if p[3] != "save":
+        changes = input("Keep Changes? (y/n):")
+        if changes == "y":
+            images.update({p[1]: copy})
+        else:
+            return p
 
         # print('Method 1 Parameter: {0}'.format(p[0]))
 
 def p_method_2p(p):
-    '''method_2p : ID DOT METHOD_2P LP INT COMMA INT RP '''
+    '''method_2p : ID DOT METHOD_2P LP INT COMMA INT RP
+                 | ID DOT METHOD_2P LP ID COMMA STRING
+                 '''
     #'METHOD_2P': ['translate', 'resize'],
     p[0] = (p[3], p[5],p[7])
 
@@ -162,25 +187,42 @@ def p_method_2p(p):
         print("ID Error")
         return p
 
+    copy = images[p[1]].copy()
+
     # print('Method 2 Parameter: {0}'.format(p[0]))
     if p[3] == 'translate':
-        # print('Translate')
-        images[p[1]] = translate(images[p[1]], p[5],p[7])
         imshow(images[p[1]])
         plt.show()
 
     elif p[3] == 'resize':
         # print('Resize')
-        images[p[1]] = re_size(images[p[1]], p[5], p[7])
-        imshow(images[p[1]])
+        copy = re_size(copy, p[5], p[7])
+        imshow(copy)
         plt.show()
+
+    elif p[3] == 'crop':
+        copy = crop(copy, p[5], p[7])
+        imshow(copy)
+        plt.show()
+
+    elif p[3] == 'spiral':
+        copy = spiral(copy, p[5], p[7])
+        imshow(copy)
+        plt.show()
+
+    changes = input("Keep Changes? (y/n):")
+    if changes == "y":
+        images.update({p[1]: copy})
+    else:
+        return p
 
 def p_img_assignment(p):
     '''img_assignment : ID EQUALS ID'''
     p[0] = (p[2], p[1], p[3])
     global images
-    if images.get(p[3],'Not Found') != 'Not Found':
-        images[p[1]] = images[p[3]]
+    if images.get(p[3]) is not None:
+        images[p[1]] = None
+        images.update({p[1]:images[p[3]]})
     else:
         print('ID Error')
     # print('IMG Assignment: {0}'.format(p[0]))

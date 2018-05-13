@@ -1,6 +1,5 @@
 import numpy as np
 from scipy.signal import convolve2d
-from scipy import misc
 import matplotlib.pylab as plt
 from skimage import feature
 from scipy import ndimage
@@ -9,6 +8,8 @@ from skimage.transform import resize
 from skimage.transform import swirl
 from skimage.transform import rescale
 from skimage import util
+from skimage import io
+import glob
 
 def _convolve_all_colours(im, window):
     """
@@ -158,20 +159,6 @@ def rotate(im, direction):
     rim = ndimage.rotate(im, d[direction])
     return rim
 
-def translate(im, h, w):
-
-    t_matrix = [[1, 0, 0],
-                          [0, 1, 0],
-                          [w, h, 1]]
-    im = ndimage.interpolation.affine_transform(im, t_matrix,
-            offset=0.0, output_shape=None, output=None, order=3, mode='constant', cval=0.0, prefilter=True)
-
-    return im
-
-    # transformed = ndimage.interpolation.affine_transform(im, ((np.cos(0), np.sin(0)), (-np.sin(0), np.cos(0))),
-    #                                                 offset=(h, -w), order=3, mode='nearest')
-
-
 def re_size(im, h, w):
     im = resize(im, (h, w),mode='constant')
     return im
@@ -179,31 +166,28 @@ def re_size(im, h, w):
 def invert(im):
     return util.invert(im)
 
-def swirly(im):
-    return swirl(im, center=None, strength=75, radius=150, rotation=0, output_shape=None, order=1,
+#Crop with respect to the center of the image, cropx and cropy cannot be larger that the dimesions of the image
+def crop(im, cropx, cropy):
+    y = im.shape[0]
+    x = im.shape[1]
+    startx = x // 2 - (cropx // 2)
+    starty = y // 2 - (cropy // 2)
+    return im[starty:starty + cropy, startx:startx + cropx]
+
+#second parameter  is the strength of the spiral and third parameter is the radius of the spiral
+def spiral(im, s, r):
+    return swirl(im, center=None, strength=s, radius=r, rotation=0, output_shape=None, order=1,
                             mode='constant', cval=0, clip=True, preserve_range=False)
 
-def re_scale(im):
-    return rescale(im, 2, order=1, mode='constant', cval=0, clip=True, preserve_range=False)
+def re_scale(im, factor):
+    return rescale(im, factor, order=1, mode='constant', cval=0, clip=True, preserve_range=False)
 
 
-im = imread("a.png")
-im2 = re_scale(im)
-# im2 = imread("Lenna.jpg")
+def saveimg(im, name):
+    io.imsave(name, im)
 
 """print(""+str(im.shape))
 gray = grayscale(im)
 print(""+str(gray.shape))
 plti(gray)
 plti(im)"""
-# im = grayscale(im, weights=np.c_[0.2989, 0.5870, 0.1140])
-# plt.imshow(im)
-plt.imshow(im2)
-
-# sharp = canny(im, 'HIGH')
-# plt.imshow(im, cmap='gray')
-# plt.imshow(sharp)
-
-# gauss = gaussian(im2, 'HIGH')
-# imshow(gauss)
-plt.show()

@@ -6,7 +6,7 @@ while True:
     try:
         parse_in = input('SIP >>')
         sipParser.parse(parse_in)
-    except EOFError:
+    except (EOFError, KeyboardInterrupt):
         break
 
 
