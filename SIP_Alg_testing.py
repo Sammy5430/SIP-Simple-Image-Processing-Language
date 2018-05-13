@@ -3,35 +3,18 @@ from scipy.signal import convolve2d
 import matplotlib.pylab as plt
 from skimage import feature
 from scipy import ndimage
+from scipy import misc
+from skimage.transform import resize
+
+
 
 
 def sharpen(im):
-    # Create the identity filter, but with the 1 shifted to the right!
-    kernel = np.zeros((9, 9), np.float)
-    k = np.array([[0, -1, 0], [-1, 5, -1], [0, -1, 0]])
-    kernel[4, 4] = 2.00  # Identity, times two!
-
-    # Create a box filter:
-    boxFilter = np.ones((9, 9), np.float) / 81.0
-
-    # Subtract the two:
-    kernel = kernel - boxFilter
-
-    # Note that we are subject to overflow and underflow here...but I believe that
-    # filter2D clips top and bottom ranges on the output, plus you'd need a
-    # very bright or very dark pixel surrounded by the opposite type.
-
-    # custom = cv2.filter2D(imgIn, -1, kernel)
-    """blurred_f = gaussian(im, "MEDIUM")
-    filter_blurred_f = gaussian(blurred_f, 1)
-    alpha = 60
-    sharpened = im + alpha * (im - blurred_f)"""
-    sharpened = _convolve_all_colours(im, k)
+    sharpened = misc.imfilter(im, 'sharpen')
     return sharpened
 
-
 def canny(im, level):
-    intensity = {'HIGH': 1, 'MEDIUM': 3, "LOW": 6}
+    intensity = {'HIGH': 1, 'MEDIUM': 3, 'LOW': 6}
     edges = feature.canny(im, sigma=intensity[level])
     return edges
 
@@ -138,31 +121,71 @@ def red(im):
     im[:, :, 2] = 0  # Zero out contribution from blue
     return im
 
-
 def blue(im):
     im[:, :, 1] = 0  # Zero out contribution from green
     im[:, :, 0] = 0  # Zero out contribution from red
     return im
-
 
 def green(im):
     im[:, :, 0] = 0  # Zero out contribution from blue
     im[:, :, 2] = 0  # Zero out contribution from red
     return im
 
+def sepia(im):
+    sepia_filter = np.array([[.393, .769, .189],
+                             [.349, .686, .168],
+                             [.272, .534, .131]])
 
-# im = plt.imread("test.png")
-# gray = sharpen(im)
+    sepia_img = im.dot(sepia_filter.T)
+    sepia_img /= sepia_img.max()
+
+    return im
+
+def rotate(im, direction):
+
+    d = {'right': -90, 'left': 90}
+    # Default reshaping is true
+    rim = ndimage.rotate(im, d[direction])
+    return rim
+
+def translate(im, h, w):
+
+    t_matrix = [[1, 0, 0],
+                          [0, 1, 0],
+                          [w, h, 1]]
+    im = ndimage.interpolation.affine_transform(im, t_matrix,
+            offset=0.0, output_shape=None, output=None, order=3, mode='constant', cval=0.0, prefilter=True)
+
+    return im
+
+    # transformed = ndimage.interpolation.affine_transform(im, ((np.cos(0), np.sin(0)), (-np.sin(0), np.cos(0))),
+    #                                                 offset=(h, -w), order=3, mode='nearest')
+
+
+def re_size(im, h, w):
+    im = resize(im, (h, w),mode='constant')
+    return im
+
+# im = plt.imread("gray.jpg")
+# gray = grayscale(im)
+# gray = rotate(im,'left')
+# gray = sharpen2(im,'LOW')
+
+# gray = gaussian(im, 'HIGH')
+# edges = canny(im,'HIGH')
+# gray = canny(im, 'LOW')
+# plti(gray)
+# plti(edges)
+
 # plt.imshow(gray)
-# im = grayscale(im, weights=np.c_[0.2989, 0.5870, 0.1140])
-# plt.imshow(im)
-
 # sharp = canny(im, 'LOW')
-# plt.imshow(im, cmap='gray')
+# plt.imshow(sharp, cmap='gray')
 # plt.imshow(sharp)
 """
 plti(sharpen(im))
 gray_im = to_grayscale(im)
 t = otsu_threshold(gray_im)
 plti(simple_threshold(gray_im, t), cmap='Greys')"""
-# plt.show()
+plt.show()
+
+

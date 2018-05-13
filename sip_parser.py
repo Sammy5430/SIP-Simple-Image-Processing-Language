@@ -17,7 +17,13 @@ from SIPAlgorithms import green
 from SIPAlgorithms import sepia
 from SIPAlgorithms import rotate
 from SIPAlgorithms import gaussian
-from SIPAlgorithms import sharpen2
+from SIPAlgorithms import sharpen
+from SIPAlgorithms import translate
+from SIPAlgorithms import re_size
+from SIPAlgorithms import canny
+from SIPAlgorithms import imshow
+from SIPAlgorithms import imread
+
 
 
 tokens = siplex.tokens
@@ -61,72 +67,54 @@ def p_method_no(p):
 
 def p_method_np(p):
     '''method_np : ID DOT METHOD_NP LP RP '''
-    # 'METHOD_NP': ['greyScale', 'sepia', 'red','green', 'blue', 'edges', 'segmentation', 'show'],
+    # 'METHOD_NP': ['greyScale', 'sepia', 'red','green', 'blue', 'edges', 'show'],
     p[0] = (p[3],p[1])
     global images
 
-    if images.get(p[1],'Not Found') == 'Not Found':
+    if images.get(p[1]) is None:
         print("ID Error")
         return p
 
     if p[3] == 'greyscale':
-        print("GreyScale")
+        # print("GreyScale")
         images[p[1]] = grayscale(images[p[1]])
-        plt.imshow(images[p[1]],cmap="gray")
-        # Remove ticks from axis
-        plt.gca().get_xaxis().set_visible(False)
-        plt.gca().get_yaxis().set_visible(False)
+        imshow(images[p[1]])
         plt.show()
 
     elif p[3] == "sepia":
-        print("Sepia")
+        # print("Sepia")
         images[p[1]] = sepia(images[p[1]])
-        plt.imshow(images[p[1]])
-        # Remove ticks from axis
-        plt.gca().get_xaxis().set_visible(False)
-        plt.gca().get_yaxis().set_visible(False)
+        imshow(images[p[1]])
         plt.show()
 
     elif p[3] == "show":
-        print('Executing Show')
-        plt.imshow(images[p[1]])
-        # Remove ticks from axis
-        plt.gca().get_xaxis().set_visible(False)
-        plt.gca().get_yaxis().set_visible(False)
+        # print('Executing Show')
+        imshow(images[p[1]])
         plt.show()
 
     elif p[3] == "red":
-        print('Executing Red')
+        # print('Executing Red')
         images[p[1]] = red(images[p[1]])
-        plt.imshow(images[p[1]])
-        # Remove ticks from axis
-        plt.gca().get_xaxis().set_visible(False)
-        plt.gca().get_yaxis().set_visible(False)
+        imshow(images[p[1]])
         plt.show()
 
     elif p[3] == "blue":
-        print('Executing Blue')
+        # print('Executing Blue')
         images[p[1]] = blue(images[p[1]])
-        plt.imshow(images[p[1]])
-        # Remove ticks from axis
-        plt.gca().get_xaxis().set_visible(False)
-        plt.gca().get_yaxis().set_visible(False)
+        imshow(images[p[1]])
         plt.show()
 
     elif p[3] == "green":
-        print('Executing Green')
+        # print('Executing Green')
         images[p[1]] = green(images[p[1]])
-        plt.imshow(images[p[1]])
-        # Remove ticks from axis
-        plt.gca().get_xaxis().set_visible(False)
-        plt.gca().get_yaxis().set_visible(False)
+        imshow(images[p[1]])
         plt.show()
 
-    elif p[3] == "edges":
-        print('Edges')
-
-    elif p[3] == "segmentation":
-        print('Segmentation')
+    elif p[3] == 'sharpen':
+        # print('Sharpen')
+        images[p[1]] = sharpen(images[p[1]])
+        imshow(images[p[1]])
+        plt.show()
 
     # print('Method No Parameter: {0}'.format(p[0]))
 
@@ -134,41 +122,33 @@ def p_method_1p(p):
     '''method_1p : ID DOT METHOD_1P LP DIRECTION RP
                    | ID DOT METHOD_1P LP LEVEL RP
                    | ID DOT METHOD_1P LP STRING RP'''
-    # 'METHOD_1P': ['enhance', 'sharpen', 'blur', 'rotate'],
+    # 'METHOD_1P': ['sharpen', 'blur', 'rotate'],
     global images
 
-    if images.get(p[1], 'Not Found') == 'Not Found':
+    if images.get(p[1]) is None:
         print("ID Error")
         return p
 
     p[0] = (p[3], p[5])
 
-    if p[3] == 'sharpen':
-        print('Sharpen')
-        images[p[1]] = sharpen2(images[p[1]], p[5])
-        plt.imshow(images[p[1]])
-        # Remove ticks from axis
-        plt.gca().get_xaxis().set_visible(False)
-        plt.gca().get_yaxis().set_visible(False)
-        plt.show()
-
-    elif p[3] == 'blur':
-        print('Blur')
+    if p[3] == 'blur':
+        # print('Blur')
         images[p[1]] = gaussian(images[p[1]], p[5])
-        plt.imshow(images[p[1]])
-        # Remove ticks from axis
-        plt.gca().get_xaxis().set_visible(False)
-        plt.gca().get_yaxis().set_visible(False)
+        imshow(images[p[1]])
         plt.show()
 
     elif p[3] == 'rotate':
-        print('Rotate')
+        # print('Rotate')
         images[p[1]] = rotate(images[p[1]], p[5])
-        plt.imshow(images[p[1]])
-        # Remove ticks from axis
-        plt.gca().get_xaxis().set_visible(False)
-        plt.gca().get_yaxis().set_visible(False)
+        imshow(images[p[1]])
         plt.show()
+
+    elif p[3] == 'edges':
+        # print('Edges')
+        images[p[1]] = canny(images[p[1]],p[5])
+        imshow(images[p[1]])
+        plt.show()
+
         # print('Method 1 Parameter: {0}'.format(p[0]))
 
 def p_method_2p(p):
@@ -178,16 +158,22 @@ def p_method_2p(p):
 
     global images
 
-    if images.get(p[1],'Not Found') == 'Not Found':
+    if images.get(p[1]) is None:
         print("ID Error")
         return p
 
     # print('Method 2 Parameter: {0}'.format(p[0]))
     if p[3] == 'translate':
-        print('Translate')
+        # print('Translate')
+        images[p[1]] = translate(images[p[1]], p[5],p[7])
+        imshow(images[p[1]])
+        plt.show()
 
     elif p[3] == 'resize':
-        print('Resize')
+        # print('Resize')
+        images[p[1]] = re_size(images[p[1]], p[5], p[7])
+        imshow(images[p[1]])
+        plt.show()
 
 def p_img_assignment(p):
     '''img_assignment : ID EQUALS ID'''
@@ -203,15 +189,12 @@ def p_method_assignment(p):
     '''method_assignment : ID EQUALS method_no'''
     p[0] = (p[2], p[1], p[3])
     global images
-    print(p[0])
+
     if p[3][0] == "read":
         # Need to use the replace method to remove quotes from string
         path = p[3][1].replace('"', '')
-        images[p[1]] = plt.imread(path)
-        plt.imshow(images[p[1]])
-        # Remove ticks from axis
-        plt.gca().get_xaxis().set_visible(False)
-        plt.gca().get_yaxis().set_visible(False)
+        images[p[1]] = imread(path)
+        imshow(images[p[1]])
         plt.show()
     else:
         print("Cannot use that method in a assignment")
