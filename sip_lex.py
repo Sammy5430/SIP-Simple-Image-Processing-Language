@@ -4,52 +4,79 @@
 # -----------------------------------------------------------------------------
 import ply.lex as lex
 import ply.yacc as yacc
+from ply.lex import TOKEN
+import re
 import sys
 
 # reserved Words
+
 reserved = {
-    'readImage': 'READ',
-    'rotate': 'ROTATE',
-    'resize': 'RESIZE',
-    'translate': 'TRANSLATE',
-    'enhance': 'ENHANCE',
-    'sharpen': 'SHARPEN',
-    'blur': 'BLUR',
-    'denoise': 'DENOISE',
-    'greyScale': 'GREY',
-    'sepia': 'SEPIA',
-    'getR': 'RED',
-    'getG': 'GREEN',
-    'getB': 'BLUE',
-    'getEdges': 'EDGES',
-    'segmentation': 'SEGMENTATION',
-    'show': 'SHOW'
+    'METHOD_NP': ['greyScale', 'sepia', 'red',
+                  'green', 'blue', 'edges', 'segmentation', 'show'],
+    'METHOD_1P': ['enhance', 'sharpen', 'blur', 'denoise', 'rotate'],
+    'METHOD_2P': ['translate', 'resize'],
+    'METHOD_NO': ['read'],
+    'LEVEL': ['low', 'medium', 'high'],
+    'DIRECTION': ['right', 'left'],
+
 
 }
 
 # tokens
-tokens = (
-    'INT', 'FLOAT',
-    'EQUALS', 'ID', 'LBRACE', 'RBRACE', 'EQUALS', 'DOT',
-    'COMMA', 'LPAREN', 'RPAREN', 'STRING'
-)
+tokens = [
+    'INT',
+    'EQUALS', 'ID', 'DOT',
+    'COMMA', 'LP', 'RP', 'STRING',
+] + list(reserved)
 
-# Basic Regular Expressions
+# print(tokens)
+
+# Declaration of Basic Regular Expressions
 t_EQUALS = r'\='
-t_LBRACE = r'\{'
-t_RBRACE = r'\}'
 t_DOT = r'\.'
 t_COMMA = r'\,'
-t_LPAREN = r'\('
-t_RPAREN = r'\)'
+t_LP = r'\('
+t_RP = r'\)'
 
+# SIP Regular Expressions Patterns
+reg_method_np = re.compile('|'.join(reserved['METHOD_NP']))
+reg_method_1p = re.compile('|'.join(reserved['METHOD_1P']))
+reg_method_2p = re.compile('|'.join(reserved['METHOD_2P']))
+reg_method_no = re.compile(reserved.get('METHOD_NO')[0])
+reg_level = re.compile('|'.join(reserved['LEVEL']))
+reg_direction = re.compile('|'.join(reserved['DIRECTION']))
 
-# Regular Expression
-
-def t_FLOAT(t):
-    r'\d+\.\d'
-    t.value = float(t.value)
+# SIP Regular Expressions
+@TOKEN(reg_method_np.pattern)
+def t_METHOD_NP(t):
     return t
+
+
+@TOKEN(reg_method_1p.pattern)
+def t_METHOD_1P(t):
+    return t
+
+
+@TOKEN(reg_method_2p.pattern)
+def t_METHOD_2P(t):
+    return t
+
+
+@TOKEN(reg_method_no.pattern)
+def t_METHOD_NO(t):
+    return t
+
+
+@TOKEN(reg_level.pattern)
+def t_LEVEL(t):
+    return t
+
+
+@TOKEN(reg_direction.pattern)
+def t_DIRECTION(t):
+    return t
+
+# Generic Regular Expressions
 
 def t_INT(t):
     r'\d+'
@@ -60,11 +87,16 @@ def t_INT(t):
         t.value = 0
     return t
 
+def t_STRING(t):
+    r'\"(.+?)\"'
+    return t
 
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z_0-9]*'
     t.type = 'ID'
+    # t.type = reserved.get(t.value, 'ID')  # Check reserved words
     return t
+
 
 # Ignored characters
 t_ignore = " \t"
@@ -80,13 +112,18 @@ def t_error(t):
     t.lexer.skip(1)
 
 # Lexer
-lexer = lex.lex()
+lexer = lex.lex(reflags=re.UNICODE|re.IGNORECASE)
+#
 
-lexer.input("img.readImage()")
+# test1 = "img.rotate(right)"
+# test2 = "hello = readImage(\"Desktop\")"
+#
+# lexer.input(test2)
+
 
 # Looping for input
-while True:
-    tok = lexer.token()
-    if not tok:
-        break
-    print(tok)
+# while True:
+#     tok = lexer.token()
+#     if not tok:
+#         break
+#     print(tok)
