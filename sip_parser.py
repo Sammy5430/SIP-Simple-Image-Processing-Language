@@ -74,8 +74,8 @@ def p_method_np(p):
 
     copy = images[p[1]].copy()
 
-    if p[3] == 'greyscale':
-        # print("GreyScale")
+    if p[3] == 'grayscale':
+        # print("GrayScale")
         copy = grayscale(copy)
         imshow(copy)
         plt.show()
