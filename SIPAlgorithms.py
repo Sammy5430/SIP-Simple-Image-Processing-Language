@@ -2,6 +2,8 @@ import numpy as np
 from scipy.signal import convolve2d
 import matplotlib.pylab as plt
 from skimage import feature
+from skimage import io
+from skimage import filters
 from scipy import ndimage
 from scipy import misc
 from skimage.transform import resize
@@ -10,7 +12,6 @@ from skimage.transform import rescale
 from skimage import util
 from skimage import io
 from skimage import filters
-
 
 def _convolve_all_colours(im, window):
     """
@@ -136,6 +137,7 @@ def grayscale(im, weights=np.c_[0.2989, 0.5870, 0.1140]):
     return np.dot(im[..., :3], [0.299, 0.587, 0.114])
 
 
+
 def red(im):
     im[:, :, 1] = 0  # Zero out contribution from green
     im[:, :, 2] = 0  # Zero out contribution from blue
@@ -152,7 +154,6 @@ def green(im):
     im[:, :, 0] = 0  # Zero out contribution from blue
     im[:, :, 2] = 0  # Zero out contribution from red
     return im
-
 
 def sepia(im):
     sepia_filter = np.array([[.393, .769, .189],

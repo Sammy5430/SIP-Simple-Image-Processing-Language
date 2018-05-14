@@ -72,7 +72,6 @@ def p_method_np(p):
         return p
 
     copy = images[p[1]].copy()
-
     if p[3] == 'grayscale':
         # print("GrayScale")
         copy = grayscale(copy)
@@ -182,6 +181,7 @@ def p_method_2p(p):
 
     global images
 
+
     if images.get(p[1]) is None:
         print("ID Error")
         return p
@@ -216,10 +216,12 @@ def p_method_2p(p):
 
     # print('Method 2 Parameter: {0}'.format(p[0]))
 
+
 def p_img_assignment(p):
     '''img_assignment : ID EQUALS ID'''
     p[0] = (p[2], p[1], p[3])
     global images
+
     if images.get(p[3]) is not None:
         images[p[1]] = None
         images.update({p[1]:images[p[3]]})

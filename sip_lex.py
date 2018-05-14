@@ -18,8 +18,6 @@ reserved = {
     'METHOD_NO': ['read'],
     'LEVEL': ['low', 'medium', 'high'],
     'DIRECTION': ['right', 'left'],
-
-
 }
 
 # tokens
