@@ -2,6 +2,7 @@ import ply.yacc as yacc
 import sip_lex as siplex
 import sys
 import matplotlib.pylab as plt
+import numpy as np
 from SIPAlgorithms import grayscale
 from SIPAlgorithms import red
 from SIPAlgorithms import blue
@@ -19,6 +20,7 @@ from SIPAlgorithms import invert
 from SIPAlgorithms import crop
 from SIPAlgorithms import spiral
 from SIPAlgorithms import saveimg
+from SIPAlgorithms import isgray
 
 tokens = siplex.tokens
 
@@ -91,33 +93,46 @@ def p_method_np(p):
 
     elif p[3] == "red":
         # print('Executing Red')
-        copy = red(copy)
-        imshow(copy)
-        plt.show()
+        if not isgray(copy):
+            copy = red(copy)
+            imshow(copy)
+            plt.show()
+
+        else:
+            print("Can't call this method on a 2D image.")
 
     elif p[3] == "blue":
         # print('Executing Blue')
-        copy = blue(copy)
-        imshow(copy)
-        plt.show()
+        if not isgray(copy):
+            copy = blue(copy)
+            imshow(copy)
+            plt.show()
+
+        else:
+            print("Can't call this method on a 2D image.")
 
     elif p[3] == "green":
         # print('Executing Green')
-        copy = green(copy)
-        imshow(copy)
-        plt.show()
+        if not isgray(copy):
+            copy = green(copy)
+            imshow(copy)
+            plt.show()
+
+        else:
+            print("Can't call this method on a 2D image.")
 
     elif p[3] == 'sharpen':
         # print('Sharpen')
         copy = sharpen2(copy)
         imshow(copy)
         plt.show()
+
     elif p[3] == 'invert':
         copy = invert(copy)
         imshow(copy)
         plt.show()
 
-    if p[3] != "show":
+    if not np.array_equal(copy, images[p[1]]):
         changes = input("Keep Changes? (y/n):")
         if changes == "y":
             images.update({p[1]: copy})
@@ -132,7 +147,6 @@ def p_method_1p(p):
                    | ID DOT METHOD_1P LP STRING RP'''
 
     global images
-
     if images.get(p[1]) is None:
         print("ID Error")
         return p
@@ -163,7 +177,7 @@ def p_method_1p(p):
         # print('Edges')
         saveimg(copy, p[5].replace('"', ''))
 
-    if p[3] != "save":
+    if not np.array_equal(copy, images[p[1]]):
         changes = input("Keep Changes? (y/n):")
         if changes == "y":
             images.update({p[1]: copy})
