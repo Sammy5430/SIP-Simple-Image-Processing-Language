@@ -11,15 +11,13 @@ import sys
 # reserved Words
 
 reserved = {
-    'METHOD_NP': ['greyScale', 'sepia', 'red',
-                  'green', 'blue', 'edges', 'segmentation', 'show'],
-    'METHOD_1P': ['enhance', 'sharpen', 'blur', 'denoise', 'rotate'],
-    'METHOD_2P': ['translate', 'resize'],
+    'METHOD_NP': ['grayscale', 'sepia', 'red',
+                  'green', 'blue', 'show','sharpen','invert'],
+    'METHOD_1P': ['blur', 'rotate','edges', 'save'],
+    'METHOD_2P': ['translate', 'resize','crop','spiral'],
     'METHOD_NO': ['read'],
     'LEVEL': ['low', 'medium', 'high'],
     'DIRECTION': ['right', 'left'],
-
-
 }
 
 # tokens
@@ -112,7 +110,7 @@ def t_error(t):
     t.lexer.skip(1)
 
 # Lexer
-lexer = lex.lex(reflags=re.UNICODE|re.IGNORECASE)
+lexer = lex.lex(reflags=re.UNICODE)
 #
 
 # test1 = "img.rotate(right)"
