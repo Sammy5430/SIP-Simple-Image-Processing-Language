@@ -3,7 +3,11 @@ import sip_parser
 
 sipParser = sip_parser.getparser()
 while True:
-    gra = input('SIP >>')
-    sipParser.parse(gra)
+    try:
+        parse_in = input('SIP >>')
+        sipParser.parse(parse_in)
+    except (EOFError, KeyboardInterrupt):
+        break
+
 
 

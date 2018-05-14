@@ -1,19 +1,33 @@
 import ply.yacc as yacc
 import sip_lex as siplex
-# from scipy import stats
-# import matplotlib as mat
-import os
-import numpy
 import sys
+import matplotlib.pylab as plt
+import numpy as np
+from SIPAlgorithms import grayscale
+from SIPAlgorithms import red
+from SIPAlgorithms import blue
+from SIPAlgorithms import green
+from SIPAlgorithms import sepia
+from SIPAlgorithms import rotate
+from SIPAlgorithms import gaussian
+from SIPAlgorithms import sharpen
+from SIPAlgorithms import sharpen2
+from SIPAlgorithms import re_size
+from SIPAlgorithms import canny
+from SIPAlgorithms import imshow
+from SIPAlgorithms import imread
+from SIPAlgorithms import invert
+from SIPAlgorithms import crop
+from SIPAlgorithms import spiral
+from SIPAlgorithms import saveimg
+from SIPAlgorithms import isgray
+
 tokens = siplex.tokens
-import cv2
 
 global image_path, current_image
 
 #sip variables:
 images = {}
-
-#need to add special bracket format
 
 # ===========================================================================================
 # Parsing rules
@@ -22,142 +36,262 @@ images = {}
 def p_statement(p):
     '''statement : method
                     | assignment
-                    | SIP_method_block
                     | empty
                    '''
-    p[0]= p[1]
-    print(p[1])
+
+    p[0] = p[1]
+    # print('SIP Statement: {0}'.format(p[0]))
 
 def p_assignment(p):
     '''assignment : img_assignment
                   | method_assignment
                     '''
     p[0] = p[1]
+    # print('Assignment: {0}'.format(p[0]))
 
 def p_method(p):
-    '''method : ID DOT method_np
-                | ID DOT method_1p
-                | ID DOT method_2p
-                | method_no'''
-    if len(p) >= 2:
-        p[0] = (p[1], p[2], p[3])
-    else:
-        p[0] = p[1]
-
-
-def p_block_method(p):
-    '''block_method : method_np
+    '''method : method_np
                 | method_1p
-                | method_2p'''
-    # p[0] = p[1]
+                | method_2p
+                | method_no'''
 
-def p_method_list(p):
-    '''method_list : block_method
-                     | method_list'''
-    if len(p) > 2:
-        p[0] = (p[1], p[3])
-    else:
-        p[0] = p[1]
-
+    p[0] = p[1]
+    # print('Method: {0}'.format(p[0]))
 
 def p_method_no(p):
     '''method_no : METHOD_NO LP STRING RP '''
-    p[0] = (p[1],p[2],p[3],p[4])
-    # p[3] = p[3][1:-1]
-
-    print('Method with no object')
 
     if p[1].lower() == "readImage".lower():
         # image_path = p[3]
         # current_image = cv2.imread(image_path)
         print("Image uploaded")
 
+    p[0] = (p[1],p[3])
+    # print('Method No Object: {0}'.format(p[0]))
+
 def p_method_np(p):
-    '''method_np : METHOD_NP LP RP '''
-    p[0] = (p[1],p[2],p[3])
-    print('Method with no parameters')
+    '''method_np : ID DOT METHOD_NP LP RP '''
 
-    if p[1].lower() == "sepia".lower():
-        print('sepia') #execute sepia code here
 
-    if p[1].lower() == "greyScale".lower():
-        print('greyScale')
+    p[0] = (p[3],p[1])
+    global images
 
-    if p[1].lower() == "getR".lower():
-        print('getR')
+    if images.get(p[1]) is None:
+        print("ID Error")
+        return p
 
-    if p[1].lower() == "getG".lower():
-        print('getG')
+    copy = images[p[1]].copy()
+    if p[3] == 'grayscale':
+        # print("GrayScale")
+        if isgray(copy):
+            print("Can't call this method on a 2D image.")
 
-    if p[1].lower() == "getB".lower():
-        print('getB')
+        else:
+            copy = grayscale(copy)
+            imshow(copy)
+            plt.show()
 
-    if p[1].lower() == "getEdges".lower():
-        print('getEdges')
+    elif p[3] == "sepia":
+        # print("Sepia")
+        if isgray(copy):
+            print("Can't call this method on a 2D image.")
 
-    if p[1].lower() == "segmentation".lower():
-        print('segmentation')
+        else:
+            copy = sepia(copy)
+            imshow(copy)
+            plt.show()
 
+    elif p[3] == "show":
+        # print('Executing Show')
+        imshow(copy)
+        plt.show()
+
+    elif p[3] == "red":
+        # print('Executing Red')
+        if isgray(copy):
+            print("Can't call this method on a 2D image.")
+
+        else:
+            copy = red(copy)
+            imshow(copy)
+            plt.show()
+
+    elif p[3] == "blue":
+        # print('Executing Blue')
+        if isgray(copy):
+            print("Can't call this method on a 2D image.")
+
+        else:
+            copy = blue(copy)
+            imshow(copy)
+            plt.show()
+
+    elif p[3] == "green":
+        # print('Executing Green')
+        if isgray(copy):
+            print("Can't call this method on a 2D image.")
+
+        else:
+            copy = green(copy)
+            imshow(copy)
+            plt.show()
+
+    elif p[3] == 'sharpen':
+        # print('Sharpen')
+        copy = sharpen2(copy)
+        imshow(copy)
+        plt.show()
+
+    elif p[3] == 'invert':
+        copy = invert(copy)
+        imshow(copy)
+        plt.show()
+
+    if not np.array_equal(copy, images[p[1]]):
+        changes = input("Keep Changes? (y/n):")
+        if changes == "y":
+            images.update({p[1]: copy})
+        else:
+            return p
+
+    # print('Method No Parameter: {0}'.format(p[0]))
 
 def p_method_1p(p):
-    '''method_1p : METHOD_1P LP DIRECTION RP
-                   | METHOD_1P LP LEVEL RP
-                   | METHOD_1P LP STRING RP'''
-    p[0] = (p[1], p[2], p[3], p[4])
-    print('Method with 1 parameter')
+    '''method_1p : ID DOT METHOD_1P LP DIRECTION RP
+                   | ID DOT METHOD_1P LP LEVEL RP
+                   | ID DOT METHOD_1P LP STRING RP'''
 
-    if p[1].lower() == "enhance".lower():
-        print('enhance')
+    global images
+    if images.get(p[1]) is None:
+        print("ID Error")
+        return p
 
-    if p[1].lower() == "sharpen".lower():
-        print('sharpen')
+    copy = images[p[1]].copy()
 
-    if p[1].lower() == "blur".lower():
-        print('blur')
+    p[0] = (p[3], p[5])
 
-    if p[1].lower() == "denoise".lower():
-        print('denoise')
+    if p[3] == 'blur':
+        # print('Blur')
+        if isgray(copy):
+            print("Can't call this method on a 2D image.")
 
-    if p[1].lower() == "rotate".lower():
-        print('rotate')
+        else:
+            copy = gaussian(copy, p[5])
+            imshow(copy)
+            plt.show()
 
-    if p[1].lower() == "show".lower():
-        print('show')
-        cv2.imshow(current_image)
+    elif p[3] == 'rotate':
+        # print('Rotate')
+        copy = rotate(copy, p[5])
+        imshow(copy)
+        plt.show()
+
+    elif p[3] == 'edges':
+        # print('Edges')
+        if isgray(copy):
+            copy = canny(copy, p[5])
+            imshow(copy)
+            plt.show()
+
+        else:
+            print("Can't call this method on a 3D image.")
+
+    elif p[3] == 'save':
+        # print('Edges')
+        saveimg(copy, p[5].replace('"', ''))
+
+    if not np.array_equal(copy, images[p[1]]):
+        changes = input("Keep Changes? (y/n):")
+        if changes == "y":
+            images.update({p[1]: copy})
+        else:
+            return p
+
+        # print('Method 1 Parameter: {0}'.format(p[0]))
 
 def p_method_2p(p):
-    '''method_2p : METHOD_2P LP INT COMMA INT RP '''
-    p[0] = (p[1], p[2], p[3], p[4], p[5], p[6])
-    print('Method with two parameters')
+    '''method_2p : ID DOT METHOD_2P LP INT COMMA INT RP
+                 | ID DOT METHOD_2P LP ID COMMA STRING
+                 '''
+    #'METHOD_2P': ['translate', 'resize'],
+    p[0] = (p[3], p[5],p[7])
+
+    global images
+
+    if images.get(p[1]) is None:
+        print("ID Error")
+        return p
+
+    copy = images[p[1]].copy()
+
+    if p[3] == 'translate':
+        imshow(images[p[1]])
+        plt.show()
+
+    elif p[3] == 'resize':
+        # print('Resize')
+        copy = re_size(copy, p[5], p[7])
+        imshow(copy)
+        plt.show()
+
+    elif p[3] == 'crop':
+        copy = crop(copy, p[5], p[7])
+        imshow(copy)
+        plt.show()
+
+    elif p[3] == 'spiral':
+        copy = spiral(copy, p[5], p[7])
+        imshow(copy)
+        plt.show()
+
+    changes = input("Keep Changes? (y/n):")
+    if changes == "y":
+        images.update({p[1]: copy})
+    else:
+        return p
+
+    # print('Method 2 Parameter: {0}'.format(p[0]))
 
 
 def p_img_assignment(p):
     '''img_assignment : ID EQUALS ID'''
-    # if isinstance((p[1], p[2], p[3]), image):
-    p[0] = (p[1], p[2], p[3])
-    # global images
-    # images[p[1]] = p[3]
-    print('IMG Assignment')
+    p[0] = (p[2], p[1], p[3])
+    global images
+
+    if images.get(p[3]) is not None:
+        images[p[1]] = None
+        images.update({p[1]:images[p[3]]})
+    else:
+        print('ID Error')
+    # print('IMG Assignment: {0}'.format(p[0]))
 
 def p_method_assignment(p):
-    '''method_assignment : ID EQUALS method'''
-    p[0] = (p[1], p[2], p[3])
-    # global images
-    # images[p[1]] = p[3]
-    print(p[0])
-    print('Method Assignment')
+    '''method_assignment : ID EQUALS method_no'''
+    p[0] = (p[2], p[1], p[3])
+    global images
 
-def p_SIP_method_block(p):
-    '''SIP_method_block : ID LCB  method_list RCB '''
-    p[0] = p[3]
-    print('Method Block')
+    if p[3][0] == "read":
+        # Need to use the replace method to remove quotes from string
+        path = p[3][1].replace('"', '')
+        temp = imread(path)
+        if temp is None:
+            print("Error: Image not Found")
+            return p
+        else:
+            images[p[1]] = imread(path)
+            imshow(images[p[1]])
+            plt.show()
+    else:
+        print("Cannot use that method in a assignment")
+    # print('Method Assignment: {0}'.format(p[0]))
 
 def p_empty(p):
     '''empty :  '''
     p[0] = None
 
 def p_error(p):
-    sys.exit("Syntax error in input")
+    print("SIP Syntax error")
+    # sys.exit("Syntax error in input")
 
 
 def getparser():
