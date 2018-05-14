@@ -190,6 +190,17 @@ def re_scale(im, factor):
 def saveimg(im, name):
     io.imsave(name, im)
 
+def isgray(im):
+    if (len(im.shape) == 2):
+        return True
+    else:
+       return False
+
+
+im = imread("test.png")
+gray = grayscale(im)
+cond = isgray(gray)
+print(cond)
 """print(""+str(im.shape))
 gray = grayscale(im)
 print(""+str(gray.shape))

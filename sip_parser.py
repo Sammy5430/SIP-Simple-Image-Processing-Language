@@ -19,8 +19,6 @@ from SIPAlgorithms import crop
 from SIPAlgorithms import spiral
 from SIPAlgorithms import saveimg
 
-
-
 tokens = siplex.tokens
 
 #sip variables:
@@ -189,7 +187,6 @@ def p_method_2p(p):
 
     copy = images[p[1]].copy()
 
-    # print('Method 2 Parameter: {0}'.format(p[0]))
     if p[3] == 'translate':
         imshow(images[p[1]])
         plt.show()
@@ -216,6 +213,8 @@ def p_method_2p(p):
     else:
         return p
 
+    # print('Method 2 Parameter: {0}'.format(p[0]))
+
 def p_img_assignment(p):
     '''img_assignment : ID EQUALS ID'''
     p[0] = (p[2], p[1], p[3])
@@ -235,9 +234,14 @@ def p_method_assignment(p):
     if p[3][0] == "read":
         # Need to use the replace method to remove quotes from string
         path = p[3][1].replace('"', '')
-        images[p[1]] = imread(path)
-        imshow(images[p[1]])
-        plt.show()
+        temp = imread(path)
+        if temp is None:
+            print("Error: Image not Found")
+            return p
+        else:
+            images[p[1]] = imread(path)
+            imshow(images[p[1]])
+            plt.show()
     else:
         print("Cannot use that method in a assignment")
     # print('Method Assignment: {0}'.format(p[0]))
@@ -247,7 +251,8 @@ def p_empty(p):
     p[0] = None
 
 def p_error(p):
-    sys.exit("Syntax error in input")
+    print("SIP Syntax error")
+    # sys.exit("Syntax error in input")
 
 
 def getparser():
