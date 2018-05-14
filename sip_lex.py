@@ -13,7 +13,7 @@ import sys
 reserved = {
     'METHOD_NP': ['greyScale', 'sepia', 'red',
                   'green', 'blue', 'edges', 'segmentation', 'show'],
-    'METHOD_1P': ['enhance', 'sharpen', 'blur', 'denoise', 'rotate'],
+    'METHOD_1P': ['enhance', 'sharpen', 'blur', 'rotate'],
     'METHOD_2P': ['translate', 'resize'],
     'METHOD_NO': ['read'],
     'LEVEL': ['low', 'medium', 'high'],
