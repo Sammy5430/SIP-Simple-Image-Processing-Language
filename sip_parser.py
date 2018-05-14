@@ -161,6 +161,7 @@ def p_method_1p(p):
 
     elif p[3] == 'save':
         # print('Edges')
+        size = 0
         path = p[5]
         valid = False
         while not valid:
@@ -168,7 +169,10 @@ def p_method_1p(p):
                 saveimg(copy, path.replace('"', ''))
                 valid = True
             except:
-                extension = input("Please provide a valid file extension ('.jpg', '.jpeg', '.png')")
+                index = path.find('.')
+                if index > 0:
+                    path = path[ : index]
+                extension = input("Please provide a valid file extension ('.jpg', '.jpeg', '.png'): ")
                 path = path + extension
 
     if p[3] != "save":
