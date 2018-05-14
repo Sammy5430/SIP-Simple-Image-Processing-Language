@@ -9,7 +9,8 @@ from skimage.transform import swirl
 from skimage.transform import rescale
 from skimage import util
 from skimage import io
-import glob
+from skimage import filters
+
 
 def _convolve_all_colours(im, window):
     """
@@ -53,6 +54,14 @@ def _DynamicThreshold(im):
 def sharpen(im):
     sharpened = misc.imfilter(im, 'sharpen')
     return sharpened
+
+def sharpen2(image, sigma=10):
+    intesity = {'HIGH':(2, 0.6), 'MEDIUM':(1.3,0.3), 'LOW':(.6,.3)}
+    a = 1.3
+    b = 0.3
+    blurred = filters.gaussian(image, sigma=sigma, multichannel=True)
+    sharper = np.clip(image * a - blurred * b, 0, 1.0)
+    return sharper
 
 
 def canny(im, level):
@@ -197,10 +206,9 @@ def isgray(im):
        return False
 
 
-im = imread("test.png")
-gray = grayscale(im)
-cond = isgray(gray)
-print(cond)
+# im = imread("test.png")
+# gray = grayscale(im)
+# cond = isgray(gray)
 """print(""+str(im.shape))
 gray = grayscale(im)
 print(""+str(gray.shape))

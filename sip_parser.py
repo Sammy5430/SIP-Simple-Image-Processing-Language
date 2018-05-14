@@ -10,6 +10,7 @@ from SIPAlgorithms import sepia
 from SIPAlgorithms import rotate
 from SIPAlgorithms import gaussian
 from SIPAlgorithms import sharpen
+from SIPAlgorithms import sharpen2
 from SIPAlgorithms import re_size
 from SIPAlgorithms import canny
 from SIPAlgorithms import imshow
@@ -109,7 +110,7 @@ def p_method_np(p):
 
     elif p[3] == 'sharpen':
         # print('Sharpen')
-        copy = sharpen(copy)
+        copy = sharpen2(copy)
         imshow(copy)
         plt.show()
     elif p[3] == 'invert':
