@@ -151,7 +151,7 @@ def green(im):
     return im
 
 
-# im = plt.imread("test.png")
+# im = plt.imread("test2.png")
 # gray = sharpen(im)
 # plt.imshow(gray)
 # im = grayscale(im, weights=np.c_[0.2989, 0.5870, 0.1140])

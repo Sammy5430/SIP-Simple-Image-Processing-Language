@@ -161,7 +161,15 @@ def p_method_1p(p):
 
     elif p[3] == 'save':
         # print('Edges')
-        saveimg(copy, p[5].replace('"', ''))
+        path = p[5]
+        valid = False
+        while not valid:
+            try:
+                saveimg(copy, path.replace('"', ''))
+                valid = True
+            except:
+                extension = input("Please provide a valid file extension ('.jpg', '.jpeg', '.png')")
+                path = path + extension
 
     if p[3] != "save":
         changes = input("Keep Changes? (y/n):")
@@ -237,14 +245,47 @@ def p_method_assignment(p):
     if p[3][0] == "read":
         # Need to use the replace method to remove quotes from string
         path = p[3][1].replace('"', '')
-        temp = imread(path)
-        if temp is None:
-            print("Error: Image not Found")
-            return p
+        if not path.endswith(('.jpg', '.jpeg', '.png')):
+            try:
+                if(path.endswith('.')):
+                    path = path +'jpg'
+                else:
+                    path = path + '.jpg'
+                images[p[1]] = imread(path)
+                imshow(images[p[1]])
+                plt.show()
+            except(Exception):
+                try:
+                    path = path[:-4]
+                    if (path.endswith('.')):
+                        path = path + 'jpeg'
+                    else:
+                        path = path + '.jpeg'
+                    images[p[1]] = imread(path)
+                    imshow(images[p[1]])
+                    plt.show()
+                except:
+                    try:
+                        path = path[:-4]
+                        if (path.endswith('.')):
+                            path = path + 'png'
+                        else:
+                            path = path + '.png'
+                        images[p[1]] = imread(path)
+                        imshow(images[p[1]])
+                        plt.show()
+                    except:
+                        print("Error: Image Not Found")
+                        return
+
         else:
-            images[p[1]] = imread(path)
-            imshow(images[p[1]])
-            plt.show()
+            try:
+                images[p[1]] = imread(path)
+                imshow(images[p[1]])
+                plt.show()
+            except:
+                print("Error: Image Not Found")
+
     else:
         print("Cannot use that method in a assignment")
     # print('Method Assignment: {0}'.format(p[0]))

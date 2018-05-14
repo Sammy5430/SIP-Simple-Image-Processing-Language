@@ -207,7 +207,7 @@ def isgray(im):
        return False
 
 
-# im = imread("test.png")
+# im = imread("test2.png")
 # gray = grayscale(im)
 # cond = isgray(gray)
 """print(""+str(im.shape))
