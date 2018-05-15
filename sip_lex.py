@@ -77,7 +77,7 @@ def t_DIRECTION(t):
 # Generic Regular Expressions
 
 def t_INT(t):
-    r'\d+'
+    r'-?\d+'
     try:
         t.value = int(t.value)
     except ValueError:
