@@ -1,7 +1,5 @@
 import ply.yacc as yacc
 import sip_lex as siplex
-import numpy as np
-import sys
 import matplotlib.pylab as plt
 import numpy as np
 from SIPAlgorithms import grayscale
@@ -136,12 +134,6 @@ def p_method_np(p):
             imshow(copy)
             plt.show()
 
-    elif p[3] == 'sharpen':
-        # print('Sharpen')
-        copy = sharpen(copy)
-        imshow(copy)
-        plt.show()
-
     elif p[3] == 'invert':
         copy = invert(copy)
         imshow(copy)
@@ -159,7 +151,8 @@ def p_method_np(p):
 def p_method_1p(p):
     '''method_1p : ID DOT METHOD_1P LP DIRECTION RP
                    | ID DOT METHOD_1P LP LEVEL RP
-                   | ID DOT METHOD_1P LP STRING RP'''
+                   | ID DOT METHOD_1P LP STRING RP
+                   | ID DOT METHOD_1P LP INT RP'''
 
     global images
     if images.get(p[1]) is None:
@@ -195,6 +188,12 @@ def p_method_1p(p):
 
         else:
             print("Can't call this method on a 3D image.")
+
+    elif p[3] == 'sharpen':
+        # print('Sharpen')
+        copy = sharpen(copy, p[5])
+        imshow(copy)
+        plt.show()
 
     elif p[3] == 'save':
         # print('Saving')

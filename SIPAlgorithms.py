@@ -53,9 +53,10 @@ def _DynamicThreshold(im):
     return ((im > thresh) * 255).astype("uint8")
 
 
-def sharpen(im):
-    sharpened = misc.imfilter(im, 'sharpen')
-    return sharpened
+def sharpen(im, i):
+    for j in range(i):
+      im = misc.imfilter(im, 'sharpen')
+    return im
 
 def canny(im, level):
     level = level.upper()
