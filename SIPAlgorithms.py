@@ -1,6 +1,7 @@
 import numpy as np
 from scipy.signal import convolve2d
 import matplotlib.pylab as plt
+import warnings
 from skimage import feature
 from skimage import io
 from skimage import filters
@@ -55,15 +56,6 @@ def _DynamicThreshold(im):
 def sharpen(im):
     sharpened = misc.imfilter(im, 'sharpen')
     return sharpened
-
-def sharpen2(image, sigma=10):
-    intesity = {'HIGH':(2, 0.6), 'MEDIUM':(1.3,0.3), 'LOW':(.6,.3)}
-    a = 1.3
-    b = 0.3
-    blurred = filters.gaussian(image, sigma=sigma, multichannel=True)
-    sharper = np.clip(image * a - blurred * b, 0, 1.0)
-    return sharper
-
 
 def canny(im, level):
     level = level.upper()
@@ -188,8 +180,10 @@ def crop(im, cropx, cropy):
     starty = y // 2 - (cropy // 2)
     return im[starty:starty + cropy, startx:startx + cropx]
 
+
 #second parameter  is the strength of the spiral and third parameter is the radius of the spiral
 def spiral(im, s, r):
+    warnings.filterwarnings("ignore")
     return swirl(im, center=None, strength=s, radius=r, rotation=0, output_shape=None, order=1,
                             mode='constant', cval=0, clip=True, preserve_range=False)
 
@@ -207,7 +201,7 @@ def isgray(im):
        return False
 
 
-# im = imread("test.png")
+# im = imread("test2.png")
 # gray = grayscale(im)
 # cond = isgray(gray)
 """print(""+str(im.shape))

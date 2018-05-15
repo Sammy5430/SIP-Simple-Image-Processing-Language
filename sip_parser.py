@@ -1,5 +1,6 @@
 import ply.yacc as yacc
 import sip_lex as siplex
+import numpy as np
 import sys
 import matplotlib.pylab as plt
 import numpy as np
@@ -11,7 +12,6 @@ from SIPAlgorithms import sepia
 from SIPAlgorithms import rotate
 from SIPAlgorithms import gaussian
 from SIPAlgorithms import sharpen
-# from SIPAlgorithms import sharpen2
 from SIPAlgorithms import re_size
 from SIPAlgorithms import canny
 from SIPAlgorithms import imshow
@@ -197,8 +197,19 @@ def p_method_1p(p):
             print("Can't call this method on a 3D image.")
 
     elif p[3] == 'save':
-        # print('Edges')
-        saveimg(copy, p[5].replace('"', ''))
+        # print('Saving')
+        path = p[5]
+        valid = False
+        while not valid:
+            try:
+                saveimg(copy, path.replace('"', ''))
+                valid = True
+            except:
+                index = path.find('.')
+                if index > 0:
+                    path = path[ : index]
+                extension = input("Please provide a valid file extension ('.jpg', '.jpeg', '.png'): ")
+                path = path + extension
 
     if not np.array_equal(copy, images[p[1]]):
         changes = input("Keep Changes? (y/n):")
@@ -224,31 +235,74 @@ def p_method_2p(p):
 
     copy = images[p[1]].copy()
 
-    if p[3] == 'translate':
-        imshow(images[p[1]])
-        plt.show()
-
-    elif p[3] == 'resize':
+    if p[3] == 'resize':
         # print('Resize')
-        copy = re_size(copy, p[5], p[7])
-        imshow(copy)
-        plt.show()
+        if(p[5] >= 6000 or p[7] >= 6000):
+            print("Higher resize values take a longer time to apply.")
+        try:
+            copy2 = re_size(copy, p[5], p[7])
+            imshow(copy2)
+            plt.show()
+            copy = copy2
+        except:
+            if p[5] <= 0 or p[7] <= 0:
+                print("Resize values must be higher than or equal to 1")
 
     elif p[3] == 'crop':
-        copy = crop(copy, p[5], p[7])
-        imshow(copy)
-        plt.show()
+        width = copy.shape[1]
+        height = copy.shape[0]
+        if p[5] > width and p[7] > height:
+            print("Given width  and height values exceed width and height of original image.")
+            print("Valid width values for cropping the specified image are those between 1 and " + str(width))
+            print("Valid height values for cropping the specified image are those between 1 and " + str(height))
+        elif p[5] > width:
+            print("Given width value exceeds width of original image.")
+            print("Valid width values for cropping the specified image are those between 1 and " + str(width))
+        elif p[7] > height:
+            print("Given height value exceeds height of original image.")
+            print("Valid height values for cropping the specified image are those between 1 and " + str(height))
+        else:
+            try:
+                copy2 = crop(copy, p[5], p[7])
+                imshow(copy2)
+                plt.show()
+                copy = copy2
+            except:
+                if p[5] == 0 or p[7] == 0:
+                    print("Zero (0) is not a valid crop value for neither height nor width.")
+                elif p[5 <= 0 or p[7] <= 0]:
+                    print("Negative crop values are not valid for neither height nor width.")
+                else:
+                    print("Invalid crop parameters.")
+                print("Valid width values for cropping the specified image are integers between 1 and " + str(width))
+                print("Valid height values for cropping the specified image are integers between 1 and " + str(height))
 
     elif p[3] == 'spiral':
-        copy = spiral(copy, p[5], p[7])
-        imshow(copy)
-        plt.show()
+        if p[5] == 0 and p[7]==0:
+            print("Providing a strength and rotation value of zero (0) will not change the image.")
+        elif p[7] == 0:
+            print("A rotation value of zero (0) will not generate any perceivable change.")
+        elif p[5] == 0:
+            print("A strength value of zero (0) will not generate any perceivable change.")
+        elif p[5] < 0 or p[7] < 0:
+            print("Negative values are not valid for the spiral method.")
+        else:
+            try:
+                copy2 = spiral(copy, p[5], p[7])
+                imshow(copy2)
+                plt.show()
+                copy = copy2
+            except:
+                print("Invalid parameters for spiral method.")
 
-    changes = input("Keep Changes? (y/n):")
-    if changes == "y":
-        images.update({p[1]: copy})
-    else:
-        return p
+    if not np.array_equal(copy, images[p[1]]):
+        changes = input("Keep Changes? (y/n):")
+        if changes == "y":
+            images.update({p[1]: copy})
+            print("Changes to '" + str(p[1]) + "' were saved successfully.")
+        else:
+            print("Changes to '" + str(p[1]) + "' were discarded.")
+            return p
 
     # print('Method 2 Parameter: {0}'.format(p[0]))
 
@@ -273,14 +327,47 @@ def p_method_assignment(p):
     if p[3][0] == "read":
         # Need to use the replace method to remove quotes from string
         path = p[3][1].replace('"', '')
-        temp = imread(path)
-        if temp is None:
-            print("Error: Image not Found")
-            return p
+        if not path.endswith(('.jpg', '.jpeg', '.png')):
+            try:
+                if(path.endswith('.')):
+                    path = path +'jpg'
+                else:
+                    path = path + '.jpg'
+                images[p[1]] = imread(path)
+                imshow(images[p[1]])
+                plt.show()
+            except(Exception):
+                try:
+                    path = path[:-4]
+                    if (path.endswith('.')):
+                        path = path + 'jpeg'
+                    else:
+                        path = path + '.jpeg'
+                    images[p[1]] = imread(path)
+                    imshow(images[p[1]])
+                    plt.show()
+                except:
+                    try:
+                        path = path[:-4]
+                        if (path.endswith('.')):
+                            path = path + 'png'
+                        else:
+                            path = path + '.png'
+                        images[p[1]] = imread(path)
+                        imshow(images[p[1]])
+                        plt.show()
+                    except:
+                        print("Error: Image Not Found")
+                        return
+
         else:
-            images[p[1]] = imread(path)
-            imshow(images[p[1]])
-            plt.show()
+            try:
+                images[p[1]] = imread(path)
+                imshow(images[p[1]])
+                plt.show()
+            except:
+                print("Error: Image Not Found")
+
     else:
         print("Cannot use that method in a assignment")
     # print('Method Assignment: {0}'.format(p[0]))
