@@ -12,7 +12,6 @@ from SIPAlgorithms import sepia
 from SIPAlgorithms import rotate
 from SIPAlgorithms import gaussian
 from SIPAlgorithms import sharpen
-from SIPAlgorithms import sharpen2
 from SIPAlgorithms import re_size
 from SIPAlgorithms import canny
 from SIPAlgorithms import imshow
@@ -139,7 +138,7 @@ def p_method_np(p):
 
     elif p[3] == 'sharpen':
         # print('Sharpen')
-        copy = sharpen2(copy)
+        copy = sharpen(copy)
         imshow(copy)
         plt.show()
 
@@ -247,7 +246,7 @@ def p_method_2p(p):
             copy = copy2
         except:
             if p[5] <= 0 or p[7] <= 0:
-                print("Resize values must be higher than or equal to 1)")
+                print("Resize values must be higher than or equal to 1")
 
     elif p[3] == 'crop':
         width = copy.shape[1]
