@@ -3,6 +3,7 @@ import sip_lex as siplex
 import numpy as np
 import sys
 import matplotlib.pylab as plt
+import numpy as np
 from SIPAlgorithms import grayscale
 from SIPAlgorithms import red
 from SIPAlgorithms import blue
@@ -20,8 +21,11 @@ from SIPAlgorithms import invert
 from SIPAlgorithms import crop
 from SIPAlgorithms import spiral
 from SIPAlgorithms import saveimg
+from SIPAlgorithms import isgray
 
 tokens = siplex.tokens
+
+global image_path, current_image
 
 #sip variables:
 images = {}
@@ -35,6 +39,7 @@ def p_statement(p):
                     | assignment
                     | empty
                    '''
+
     p[0] = p[1]
     # print('SIP Statement: {0}'.format(p[0]))
 
@@ -57,6 +62,10 @@ def p_method(p):
 def p_method_no(p):
     '''method_no : METHOD_NO LP STRING RP '''
 
+    if p[1].lower() == "readImage".lower():
+        # image_path = p[3]
+        # current_image = cv2.imread(image_path)
+        print("Image uploaded")
 
     p[0] = (p[1],p[3])
     # print('Method No Object: {0}'.format(p[0]))
@@ -75,15 +84,23 @@ def p_method_np(p):
     copy = images[p[1]].copy()
     if p[3] == 'grayscale':
         # print("GrayScale")
-        copy = grayscale(copy)
-        imshow(copy)
-        plt.show()
+        if isgray(copy):
+            print("Can't call this method on a 2D image.")
+
+        else:
+            copy = grayscale(copy)
+            imshow(copy)
+            plt.show()
 
     elif p[3] == "sepia":
         # print("Sepia")
-        copy = sepia(copy)
-        imshow(copy)
-        plt.show()
+        if isgray(copy):
+            print("Can't call this method on a 2D image.")
+
+        else:
+            copy = sepia(copy)
+            imshow(copy)
+            plt.show()
 
     elif p[3] == "show":
         # print('Executing Show')
@@ -92,33 +109,46 @@ def p_method_np(p):
 
     elif p[3] == "red":
         # print('Executing Red')
-        copy = red(copy)
-        imshow(copy)
-        plt.show()
+        if isgray(copy):
+            print("Can't call this method on a 2D image.")
+
+        else:
+            copy = red(copy)
+            imshow(copy)
+            plt.show()
 
     elif p[3] == "blue":
         # print('Executing Blue')
-        copy = blue(copy)
-        imshow(copy)
-        plt.show()
+        if isgray(copy):
+            print("Can't call this method on a 2D image.")
+
+        else:
+            copy = blue(copy)
+            imshow(copy)
+            plt.show()
 
     elif p[3] == "green":
         # print('Executing Green')
-        copy = green(copy)
-        imshow(copy)
-        plt.show()
+        if isgray(copy):
+            print("Can't call this method on a 2D image.")
+
+        else:
+            copy = green(copy)
+            imshow(copy)
+            plt.show()
 
     elif p[3] == 'sharpen':
         # print('Sharpen')
         copy = sharpen2(copy)
         imshow(copy)
         plt.show()
+
     elif p[3] == 'invert':
         copy = invert(copy)
         imshow(copy)
         plt.show()
 
-    if p[3] != "show":
+    if not np.array_equal(copy, images[p[1]]):
         changes = input("Keep Changes? (y/n):")
         if changes == "y":
             images.update({p[1]: copy})
@@ -133,7 +163,6 @@ def p_method_1p(p):
                    | ID DOT METHOD_1P LP STRING RP'''
 
     global images
-
     if images.get(p[1]) is None:
         print("ID Error")
         return p
@@ -144,9 +173,13 @@ def p_method_1p(p):
 
     if p[3] == 'blur':
         # print('Blur')
-        copy = gaussian(copy, p[5])
-        imshow(copy)
-        plt.show()
+        if isgray(copy):
+            print("Can't call this method on a 2D image.")
+
+        else:
+            copy = gaussian(copy, p[5])
+            imshow(copy)
+            plt.show()
 
     elif p[3] == 'rotate':
         # print('Rotate')
@@ -156,9 +189,13 @@ def p_method_1p(p):
 
     elif p[3] == 'edges':
         # print('Edges')
-        copy = canny(copy, p[5])
-        imshow(copy)
-        plt.show()
+        if isgray(copy):
+            copy = canny(copy, p[5])
+            imshow(copy)
+            plt.show()
+
+        else:
+            print("Can't call this method on a 3D image.")
 
     elif p[3] == 'save':
         # print('Saving')
@@ -175,7 +212,7 @@ def p_method_1p(p):
                 extension = input("Please provide a valid file extension ('.jpg', '.jpeg', '.png'): ")
                 path = path + extension
 
-    if p[3] != "save":
+    if not np.array_equal(copy, images[p[1]]):
         changes = input("Keep Changes? (y/n):")
         if changes == "y":
             images.update({p[1]: copy})
@@ -193,18 +230,13 @@ def p_method_2p(p):
 
     global images
 
-
     if images.get(p[1]) is None:
         print("ID Error")
         return p
 
     copy = images[p[1]].copy()
 
-    if p[3] == 'translate':
-        imshow(images[p[1]])
-        plt.show()
-
-    elif p[3] == 'resize':
+    if p[3] == 'resize':
         # print('Resize')
         if(p[5] >= 6000 or p[7] >= 6000):
             print("Higher resize values take a longer time to apply.")
@@ -352,4 +384,5 @@ def p_error(p):
 
 def getparser():
     return yacc.yacc()
+
 

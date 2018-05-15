@@ -164,7 +164,7 @@ def sepia(im):
     sepia_img = im.dot(sepia_filter.T)
     sepia_img /= sepia_img.max()
 
-    return im
+    return sepia_img
 
 def rotate(im, direction):
     direction = direction.lower()
