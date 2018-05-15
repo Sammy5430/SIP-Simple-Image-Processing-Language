@@ -1,5 +1,6 @@
 import ply.yacc as yacc
 import sip_lex as siplex
+import numpy as np
 import sys
 import matplotlib.pylab as plt
 from SIPAlgorithms import grayscale
@@ -160,8 +161,7 @@ def p_method_1p(p):
         plt.show()
 
     elif p[3] == 'save':
-        # print('Edges')
-        size = 0
+        # print('Saving')
         path = p[5]
         valid = False
         while not valid:
@@ -206,25 +206,72 @@ def p_method_2p(p):
 
     elif p[3] == 'resize':
         # print('Resize')
-        copy = re_size(copy, p[5], p[7])
-        imshow(copy)
-        plt.show()
+        if(p[5] >= 6000 or p[7] >= 6000):
+            print("Higher resize values take a longer time to apply.")
+        try:
+            copy2 = re_size(copy, p[5], p[7])
+            imshow(copy2)
+            plt.show()
+            copy = copy2
+        except:
+            if p[5] <= 0 or p[7] <= 0:
+                print("Resize values must be higher than or equal to 1)")
 
     elif p[3] == 'crop':
-        copy = crop(copy, p[5], p[7])
-        imshow(copy)
-        plt.show()
+        width = copy.shape[1]
+        height = copy.shape[0]
+        if p[5] > width and p[7] > height:
+            print("Given width  and height values exceed width and height of original image.")
+            print("Valid width values for cropping the specified image are those between 1 and " + str(width))
+            print("Valid height values for cropping the specified image are those between 1 and " + str(height))
+        elif p[5] > width:
+            print("Given width value exceeds width of original image.")
+            print("Valid width values for cropping the specified image are those between 1 and " + str(width))
+        elif p[7] > height:
+            print("Given height value exceeds height of original image.")
+            print("Valid height values for cropping the specified image are those between 1 and " + str(height))
+        else:
+            try:
+                copy2 = crop(copy, p[5], p[7])
+                imshow(copy2)
+                plt.show()
+                copy = copy2
+            except:
+                if p[5] == 0 or p[7] == 0:
+                    print("Zero (0) is not a valid crop value for neither height nor width.")
+                elif p[5 <= 0 or p[7] <= 0]:
+                    print("Negative crop values are not valid for neither height nor width.")
+                else:
+                    print("Invalid crop parameters.")
+                print("Valid width values for cropping the specified image are integers between 1 and " + str(width))
+                print("Valid height values for cropping the specified image are integers between 1 and " + str(height))
 
     elif p[3] == 'spiral':
-        copy = spiral(copy, p[5], p[7])
-        imshow(copy)
-        plt.show()
+        if p[5] == 0 and p[7]==0:
+            print("Providing a strength and rotation value of zero (0) will not change the image.")
+        elif p[7] == 0:
+            print("A rotation value of zero (0) will not generate any perceivable change.")
+        elif p[5] == 0:
+            print("A strength value of zero (0) will not generate any perceivable change.")
+        elif p[5] < 0 or p[7] < 0:
+            print("Negative values are not valid for the spiral method.")
+        else:
+            try:
+                copy2 = spiral(copy, p[5], p[7])
+                imshow(copy2)
+                plt.show()
+                copy = copy2
+            except:
+                print("Invalid parameters for spiral method.")
 
-    changes = input("Keep Changes? (y/n):")
-    if changes == "y":
-        images.update({p[1]: copy})
-    else:
-        return p
+    if not np.array_equal(copy, images[p[1]]):
+        changes = input("Keep Changes? (y/n):")
+        if changes == "y":
+            images.update({p[1]: copy})
+            print("Changes to '" + str(p[1]) + "' were saved successfully.")
+        else:
+            print("Changes to '" + str(p[1]) + "' were discarded.")
+            return p
 
     # print('Method 2 Parameter: {0}'.format(p[0]))
 

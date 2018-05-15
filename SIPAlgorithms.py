@@ -1,6 +1,7 @@
 import numpy as np
 from scipy.signal import convolve2d
 import matplotlib.pylab as plt
+import warnings
 from skimage import feature
 from skimage import io
 from skimage import filters
@@ -188,8 +189,10 @@ def crop(im, cropx, cropy):
     starty = y // 2 - (cropy // 2)
     return im[starty:starty + cropy, startx:startx + cropx]
 
+
 #second parameter  is the strength of the spiral and third parameter is the radius of the spiral
 def spiral(im, s, r):
+    warnings.filterwarnings("ignore")
     return swirl(im, center=None, strength=s, radius=r, rotation=0, output_shape=None, order=1,
                             mode='constant', cval=0, clip=True, preserve_range=False)
 
