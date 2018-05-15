@@ -247,7 +247,7 @@ def p_method_2p(p):
                 print("Valid height values for cropping the specified image are integers between 1 and " + str(height))
 
     elif p[3] == 'spiral':
-        if p[5] == 0 and p[7]==0:
+        if p[5] == 0 and p[7] == 0:
             print("Providing a strength and rotation value of zero (0) will not change the image.")
         elif p[7] == 0:
             print("A rotation value of zero (0) will not generate any perceivable change.")
