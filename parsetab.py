@@ -27,6 +27,7 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> statement","S'",1,None,None,None),
+
   ('statement -> method','statement',1,'p_statement','sip_parser.py',42),
   ('statement -> assignment','statement',1,'p_statement','sip_parser.py',43),
   ('statement -> empty','statement',1,'p_statement','sip_parser.py',44),

@@ -57,15 +57,6 @@ def sharpen(im):
     sharpened = misc.imfilter(im, 'sharpen')
     return sharpened
 
-def sharpen2(image, sigma=10):
-    intesity = {'HIGH':(2, 0.6), 'MEDIUM':(1.3,0.3), 'LOW':(.6,.3)}
-    a = 1.3
-    b = 0.3
-    blurred = filters.gaussian(image, sigma=sigma, multichannel=True)
-    sharper = np.clip(image * a - blurred * b, 0, 1.0)
-    return sharper
-
-
 def canny(im, level):
     level = level.upper()
     intensity = {'HIGH': 1, 'MEDIUM': 3, "LOW": 6}
@@ -164,7 +155,7 @@ def sepia(im):
     sepia_img = im.dot(sepia_filter.T)
     sepia_img /= sepia_img.max()
 
-    return im
+    return sepia_img
 
 def rotate(im, direction):
     direction = direction.lower()
