@@ -70,7 +70,6 @@ def p_method_no(p):
 def p_method_np(p):
     '''method_np : ID DOT METHOD_NP LP RP '''
 
-
     p[0] = (p[3],p[1])
     global images
 
@@ -151,8 +150,7 @@ def p_method_np(p):
 def p_method_1p(p):
     '''method_1p : ID DOT METHOD_1P LP DIRECTION RP
                    | ID DOT METHOD_1P LP LEVEL RP
-                   | ID DOT METHOD_1P LP STRING RP
-                   | ID DOT METHOD_1P LP INT RP'''
+                   | ID DOT METHOD_1P LP STRING RP'''
 
     global images
     if images.get(p[1]) is None:
@@ -221,9 +219,7 @@ def p_method_1p(p):
 
 def p_method_2p(p):
     '''method_2p : ID DOT METHOD_2P LP INT COMMA INT RP
-                 | ID DOT METHOD_2P LP ID COMMA STRING
                  '''
-    #'METHOD_2P': ['translate', 'resize'],
     p[0] = (p[3], p[5],p[7])
 
     global images
