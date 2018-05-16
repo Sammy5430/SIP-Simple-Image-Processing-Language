@@ -17,27 +17,26 @@ Rule 11    method_np -> ID DOT METHOD_NP LP RP
 Rule 12    method_1p -> ID DOT METHOD_1P LP DIRECTION RP
 Rule 13    method_1p -> ID DOT METHOD_1P LP LEVEL RP
 Rule 14    method_1p -> ID DOT METHOD_1P LP STRING RP
-Rule 15    method_1p -> ID DOT METHOD_1P LP INT RP
-Rule 16    method_2p -> ID DOT METHOD_2P LP INT COMMA INT RP
-Rule 17    img_assignment -> ID EQUALS ID
-Rule 18    method_assignment -> ID EQUALS method_no
-Rule 19    empty -> <empty>
+Rule 15    method_2p -> ID DOT METHOD_2P LP INT COMMA INT RP
+Rule 16    img_assignment -> ID EQUALS ID
+Rule 17    method_assignment -> ID EQUALS method_no
+Rule 18    empty -> <empty>
 
 Terminals, with rules where they appear
 
-COMMA                : 16
+COMMA                : 15
 DIRECTION            : 12
-DOT                  : 11 12 13 14 15 16
-EQUALS               : 17 18
-ID                   : 11 12 13 14 15 16 17 17 18
-INT                  : 15 16 16
+DOT                  : 11 12 13 14 15
+EQUALS               : 16 17
+ID                   : 11 12 13 14 15 16 16 17
+INT                  : 15 15
 LEVEL                : 13
-LP                   : 10 11 12 13 14 15 16
-METHOD_1P            : 12 13 14 15
-METHOD_2P            : 16
+LP                   : 10 11 12 13 14 15
+METHOD_1P            : 12 13 14
+METHOD_2P            : 15
 METHOD_NO            : 10
 METHOD_NP            : 11
-RP                   : 10 11 12 13 14 15 16
+RP                   : 10 11 12 13 14 15
 STRING               : 10 14
 error                : 
 
@@ -50,7 +49,7 @@ method               : 1
 method_1p            : 7
 method_2p            : 8
 method_assignment    : 5
-method_no            : 9 18
+method_no            : 9 17
 method_np            : 6
 statement            : 0
 
@@ -68,18 +67,17 @@ state 0
     (9) method -> . method_no
     (4) assignment -> . img_assignment
     (5) assignment -> . method_assignment
-    (19) empty -> .
+    (18) empty -> .
     (11) method_np -> . ID DOT METHOD_NP LP RP
     (12) method_1p -> . ID DOT METHOD_1P LP DIRECTION RP
     (13) method_1p -> . ID DOT METHOD_1P LP LEVEL RP
     (14) method_1p -> . ID DOT METHOD_1P LP STRING RP
-    (15) method_1p -> . ID DOT METHOD_1P LP INT RP
-    (16) method_2p -> . ID DOT METHOD_2P LP INT COMMA INT RP
+    (15) method_2p -> . ID DOT METHOD_2P LP INT COMMA INT RP
     (10) method_no -> . METHOD_NO LP STRING RP
-    (17) img_assignment -> . ID EQUALS ID
-    (18) method_assignment -> . ID EQUALS method_no
+    (16) img_assignment -> . ID EQUALS ID
+    (17) method_assignment -> . ID EQUALS method_no
 
-    $end            reduce using rule 19 (empty -> .)
+    $end            reduce using rule 18 (empty -> .)
     ID              shift and go to state 11
     METHOD_NO       shift and go to state 12
 
@@ -169,10 +167,9 @@ state 11
     (12) method_1p -> ID . DOT METHOD_1P LP DIRECTION RP
     (13) method_1p -> ID . DOT METHOD_1P LP LEVEL RP
     (14) method_1p -> ID . DOT METHOD_1P LP STRING RP
-    (15) method_1p -> ID . DOT METHOD_1P LP INT RP
-    (16) method_2p -> ID . DOT METHOD_2P LP INT COMMA INT RP
-    (17) img_assignment -> ID . EQUALS ID
-    (18) method_assignment -> ID . EQUALS method_no
+    (15) method_2p -> ID . DOT METHOD_2P LP INT COMMA INT RP
+    (16) img_assignment -> ID . EQUALS ID
+    (17) method_assignment -> ID . EQUALS method_no
 
     DOT             shift and go to state 13
     EQUALS          shift and go to state 14
@@ -191,8 +188,7 @@ state 13
     (12) method_1p -> ID DOT . METHOD_1P LP DIRECTION RP
     (13) method_1p -> ID DOT . METHOD_1P LP LEVEL RP
     (14) method_1p -> ID DOT . METHOD_1P LP STRING RP
-    (15) method_1p -> ID DOT . METHOD_1P LP INT RP
-    (16) method_2p -> ID DOT . METHOD_2P LP INT COMMA INT RP
+    (15) method_2p -> ID DOT . METHOD_2P LP INT COMMA INT RP
 
     METHOD_NP       shift and go to state 16
     METHOD_1P       shift and go to state 17
@@ -201,8 +197,8 @@ state 13
 
 state 14
 
-    (17) img_assignment -> ID EQUALS . ID
-    (18) method_assignment -> ID EQUALS . method_no
+    (16) img_assignment -> ID EQUALS . ID
+    (17) method_assignment -> ID EQUALS . method_no
     (10) method_no -> . METHOD_NO LP STRING RP
 
     ID              shift and go to state 19
@@ -235,23 +231,23 @@ state 17
 
 state 18
 
-    (16) method_2p -> ID DOT METHOD_2P . LP INT COMMA INT RP
+    (15) method_2p -> ID DOT METHOD_2P . LP INT COMMA INT RP
 
     LP              shift and go to state 24
 
 
 state 19
 
-    (17) img_assignment -> ID EQUALS ID .
+    (16) img_assignment -> ID EQUALS ID .
 
-    $end            reduce using rule 17 (img_assignment -> ID EQUALS ID .)
+    $end            reduce using rule 16 (img_assignment -> ID EQUALS ID .)
 
 
 state 20
 
-    (18) method_assignment -> ID EQUALS method_no .
+    (17) method_assignment -> ID EQUALS method_no .
 
-    $end            reduce using rule 18 (method_assignment -> ID EQUALS method_no .)
+    $end            reduce using rule 17 (method_assignment -> ID EQUALS method_no .)
 
 
 state 21
@@ -281,9 +277,9 @@ state 23
 
 state 24
 
-    (16) method_2p -> ID DOT METHOD_2P LP . INT COMMA INT RP
+    (15) method_2p -> ID DOT METHOD_2P LP . INT COMMA INT RP
 
-    INT             shift and go to state 31
+    INT             shift and go to state 30
 
 
 state 25
@@ -304,35 +300,35 @@ state 27
 
     (12) method_1p -> ID DOT METHOD_1P LP DIRECTION . RP
 
-    RP              shift and go to state 32
+    RP              shift and go to state 31
 
 
 state 28
 
     (13) method_1p -> ID DOT METHOD_1P LP LEVEL . RP
 
-    RP              shift and go to state 33
+    RP              shift and go to state 32
 
 
 state 29
 
     (14) method_1p -> ID DOT METHOD_1P LP STRING . RP
 
-    RP              shift and go to state 34
+    RP              shift and go to state 33
 
 
 state 30
 
-    (16) method_2p -> ID DOT METHOD_2P LP ID . COMMA STRING
+    (15) method_2p -> ID DOT METHOD_2P LP INT . COMMA INT RP
 
-    RP              shift and go to state 35
+    COMMA           shift and go to state 34
 
 
 state 31
 
-    (16) method_2p -> ID DOT METHOD_2P LP INT . COMMA INT RP
+    (12) method_1p -> ID DOT METHOD_1P LP DIRECTION RP .
 
-    COMMA           shift and go to state 36
+    $end            reduce using rule 12 (method_1p -> ID DOT METHOD_1P LP DIRECTION RP .)
 
 
 state 32
@@ -351,35 +347,21 @@ state 33
 
 state 34
 
-    (16) method_2p -> ID DOT METHOD_2P LP ID COMMA . STRING
+    (15) method_2p -> ID DOT METHOD_2P LP INT COMMA . INT RP
 
-    STRING          shift and go to state 37
+    INT             shift and go to state 35
 
 
 state 35
 
-    (15) method_2p -> ID DOT METHOD_2P LP INT COMMA . INT RP
+    (15) method_2p -> ID DOT METHOD_2P LP INT COMMA INT . RP
 
-    INT             shift and go to state 38
+    RP              shift and go to state 36
 
 
 state 36
 
-    (15) method_2p -> ID DOT METHOD_2P LP INT COMMA INT . RP
-
-    INT             shift and go to state 37
-
-
-state 37
-
-    (16) method_2p -> ID DOT METHOD_2P LP INT COMMA INT . RP
-
-    RP              shift and go to state 38
-
-
-state 38
-
-    (16) method_2p -> ID DOT METHOD_2P LP INT COMMA INT RP .
+    (15) method_2p -> ID DOT METHOD_2P LP INT COMMA INT RP .
 
     $end            reduce using rule 15 (method_2p -> ID DOT METHOD_2P LP INT COMMA INT RP .)
 
