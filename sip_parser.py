@@ -142,7 +142,9 @@ def p_method_np(p):
         changes = input("Keep Changes? (y/n):")
         if changes == "y":
             images.update({p[1]: copy})
+            print("Changes to '" + str(p[1]) + "' were saved successfully.")
         else:
+            print("Changes to '" + str(p[1]) + "' were discarded.")
             return p
 
     # print('Method No Parameter: {0}'.format(p[0]))
@@ -165,11 +167,12 @@ def p_method_1p(p):
         # print('Blur')
         if isgray(copy):
             print("Can't call this method on a 2D image.")
-
         else:
-            copy = gaussian(copy, p[5])
-            imshow(copy)
-            plt.show()
+            if p[5] in ('low', 'medium', 'high'):
+                copy = gaussian(copy, p[5])
+                imshow(copy)
+                plt.show()
+
 
     elif p[3] == 'rotate':
         # print('Rotate')
@@ -201,18 +204,26 @@ def p_method_1p(p):
             try:
                 saveimg(copy, path.replace('"', ''))
                 valid = True
+                print("Changes were successfully saved.")
             except:
                 index = path.find('.')
                 if index > 0:
                     path = path[ : index]
-                extension = input("Please provide a valid file extension ('.jpg', '.jpeg', '.png'): ")
+                extension = input("Please provide a valid file extension ('.jpg', '.jpeg', '.png')" +
+                                  "\nTo cancel save type 'exit': ")
+                if extension == 'exit':
+                    break
+                if not extension.startswith('.'):
+                    continue
                 path = path + extension
 
     if not np.array_equal(copy, images[p[1]]):
         changes = input("Keep Changes? (y/n):")
         if changes == "y":
             images.update({p[1]: copy})
+            print("Changes to '" + str(p[1]) + "' were saved successfully.")
         else:
+            print("Changes to '" + str(p[1]) + "' were discarded.")
             return p
 
         # print('Method 1 Parameter: {0}'.format(p[0]))
@@ -273,7 +284,7 @@ def p_method_2p(p):
                 print("Valid height values for cropping the specified image are integers between 1 and " + str(height))
 
     elif p[3] == 'spiral':
-        if p[5] == 0 and p[7]==0:
+        if p[5] == 0 and p[7] == 0:
             print("Providing a strength and rotation value of zero (0) will not change the image.")
         elif p[7] == 0:
             print("A rotation value of zero (0) will not generate any perceivable change.")

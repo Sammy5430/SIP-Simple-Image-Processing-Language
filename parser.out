@@ -17,28 +17,28 @@ Rule 11    method_np -> ID DOT METHOD_NP LP RP
 Rule 12    method_1p -> ID DOT METHOD_1P LP DIRECTION RP
 Rule 13    method_1p -> ID DOT METHOD_1P LP LEVEL RP
 Rule 14    method_1p -> ID DOT METHOD_1P LP STRING RP
-Rule 15    method_2p -> ID DOT METHOD_2P LP INT COMMA INT RP
-Rule 16    method_2p -> ID DOT METHOD_2P LP ID COMMA STRING
+Rule 15    method_1p -> ID DOT METHOD_1P LP INT RP
+Rule 16    method_2p -> ID DOT METHOD_2P LP INT COMMA INT RP
 Rule 17    img_assignment -> ID EQUALS ID
 Rule 18    method_assignment -> ID EQUALS method_no
 Rule 19    empty -> <empty>
 
 Terminals, with rules where they appear
 
-COMMA                : 15 16
+COMMA                : 16
 DIRECTION            : 12
 DOT                  : 11 12 13 14 15 16
 EQUALS               : 17 18
-ID                   : 11 12 13 14 15 16 16 17 17 18
-INT                  : 15 15
+ID                   : 11 12 13 14 15 16 17 17 18
+INT                  : 15 16 16
 LEVEL                : 13
 LP                   : 10 11 12 13 14 15 16
-METHOD_1P            : 12 13 14
-METHOD_2P            : 15 16
+METHOD_1P            : 12 13 14 15
+METHOD_2P            : 16
 METHOD_NO            : 10
 METHOD_NP            : 11
-RP                   : 10 11 12 13 14 15
-STRING               : 10 14 16
+RP                   : 10 11 12 13 14 15 16
+STRING               : 10 14
 error                : 
 
 Nonterminals, with rules where they appear
@@ -73,8 +73,8 @@ state 0
     (12) method_1p -> . ID DOT METHOD_1P LP DIRECTION RP
     (13) method_1p -> . ID DOT METHOD_1P LP LEVEL RP
     (14) method_1p -> . ID DOT METHOD_1P LP STRING RP
-    (15) method_2p -> . ID DOT METHOD_2P LP INT COMMA INT RP
-    (16) method_2p -> . ID DOT METHOD_2P LP ID COMMA STRING
+    (15) method_1p -> . ID DOT METHOD_1P LP INT RP
+    (16) method_2p -> . ID DOT METHOD_2P LP INT COMMA INT RP
     (10) method_no -> . METHOD_NO LP STRING RP
     (17) img_assignment -> . ID EQUALS ID
     (18) method_assignment -> . ID EQUALS method_no
@@ -169,8 +169,8 @@ state 11
     (12) method_1p -> ID . DOT METHOD_1P LP DIRECTION RP
     (13) method_1p -> ID . DOT METHOD_1P LP LEVEL RP
     (14) method_1p -> ID . DOT METHOD_1P LP STRING RP
-    (15) method_2p -> ID . DOT METHOD_2P LP INT COMMA INT RP
-    (16) method_2p -> ID . DOT METHOD_2P LP ID COMMA STRING
+    (15) method_1p -> ID . DOT METHOD_1P LP INT RP
+    (16) method_2p -> ID . DOT METHOD_2P LP INT COMMA INT RP
     (17) img_assignment -> ID . EQUALS ID
     (18) method_assignment -> ID . EQUALS method_no
 
@@ -191,8 +191,8 @@ state 13
     (12) method_1p -> ID DOT . METHOD_1P LP DIRECTION RP
     (13) method_1p -> ID DOT . METHOD_1P LP LEVEL RP
     (14) method_1p -> ID DOT . METHOD_1P LP STRING RP
-    (15) method_2p -> ID DOT . METHOD_2P LP INT COMMA INT RP
-    (16) method_2p -> ID DOT . METHOD_2P LP ID COMMA STRING
+    (15) method_1p -> ID DOT . METHOD_1P LP INT RP
+    (16) method_2p -> ID DOT . METHOD_2P LP INT COMMA INT RP
 
     METHOD_NP       shift and go to state 16
     METHOD_1P       shift and go to state 17
@@ -235,8 +235,7 @@ state 17
 
 state 18
 
-    (15) method_2p -> ID DOT METHOD_2P . LP INT COMMA INT RP
-    (16) method_2p -> ID DOT METHOD_2P . LP ID COMMA STRING
+    (16) method_2p -> ID DOT METHOD_2P . LP INT COMMA INT RP
 
     LP              shift and go to state 24
 
@@ -282,11 +281,9 @@ state 23
 
 state 24
 
-    (15) method_2p -> ID DOT METHOD_2P LP . INT COMMA INT RP
-    (16) method_2p -> ID DOT METHOD_2P LP . ID COMMA STRING
+    (16) method_2p -> ID DOT METHOD_2P LP . INT COMMA INT RP
 
     INT             shift and go to state 31
-    ID              shift and go to state 30
 
 
 state 25
@@ -328,68 +325,61 @@ state 30
 
     (16) method_2p -> ID DOT METHOD_2P LP ID . COMMA STRING
 
-    COMMA           shift and go to state 35
+    RP              shift and go to state 35
 
 
 state 31
 
-    (15) method_2p -> ID DOT METHOD_2P LP INT . COMMA INT RP
+    (16) method_2p -> ID DOT METHOD_2P LP INT . COMMA INT RP
 
     COMMA           shift and go to state 36
 
 
 state 32
 
-    (12) method_1p -> ID DOT METHOD_1P LP DIRECTION RP .
-
-    $end            reduce using rule 12 (method_1p -> ID DOT METHOD_1P LP DIRECTION RP .)
-
-
-state 33
-
     (13) method_1p -> ID DOT METHOD_1P LP LEVEL RP .
 
     $end            reduce using rule 13 (method_1p -> ID DOT METHOD_1P LP LEVEL RP .)
 
 
-state 34
+state 33
 
     (14) method_1p -> ID DOT METHOD_1P LP STRING RP .
 
     $end            reduce using rule 14 (method_1p -> ID DOT METHOD_1P LP STRING RP .)
 
 
-state 35
+state 34
 
     (16) method_2p -> ID DOT METHOD_2P LP ID COMMA . STRING
 
     STRING          shift and go to state 37
 
 
-state 36
+state 35
 
     (15) method_2p -> ID DOT METHOD_2P LP INT COMMA . INT RP
 
     INT             shift and go to state 38
 
 
+state 36
+
+    (15) method_2p -> ID DOT METHOD_2P LP INT COMMA INT . RP
+
+    INT             shift and go to state 37
+
+
 state 37
 
-    (16) method_2p -> ID DOT METHOD_2P LP ID COMMA STRING .
+    (16) method_2p -> ID DOT METHOD_2P LP INT COMMA INT . RP
 
-    $end            reduce using rule 16 (method_2p -> ID DOT METHOD_2P LP ID COMMA STRING .)
+    RP              shift and go to state 38
 
 
 state 38
 
-    (15) method_2p -> ID DOT METHOD_2P LP INT COMMA INT . RP
-
-    RP              shift and go to state 39
-
-
-state 39
-
-    (15) method_2p -> ID DOT METHOD_2P LP INT COMMA INT RP .
+    (16) method_2p -> ID DOT METHOD_2P LP INT COMMA INT RP .
 
     $end            reduce using rule 15 (method_2p -> ID DOT METHOD_2P LP INT COMMA INT RP .)
 
