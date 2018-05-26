@@ -8,7 +8,7 @@ Currently, there are a variety of image processing features available across mul
 
 # SIP GRAMMAR
 
-NEED TO ADD IMAGE OF GRAMMAR BUT FIRST UPLOAD THE IMAGE (only works with URL)
+![grammar](images/0_grammar.PNG)
 
 
 
@@ -28,7 +28,7 @@ NEED TO ADD IMAGE OF GRAMMAR BUT FIRST UPLOAD THE IMAGE (only works with URL)
 All variables will only be images represented as arrays of numbers representing pixels and can only be initialized by assigning an image or assigning it to a command reading an image file. 
 
 
-![variable](images/1_read.png)
+![variable](images/1_variable.png)
 
 
 ## Functions
@@ -39,7 +39,7 @@ All variables will only be images represented as arrays of numbers representing 
 
 **Example:**
 
-![read](ADDIMAGE)
+![read](images/2_read.png)
 
 
 **grayscale()**
