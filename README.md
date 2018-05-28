@@ -195,6 +195,15 @@ All variables will only be images represented as arrays of numbers representing 
 ![spiral](images/29_spiral.png)
 ![spiral](images/30_spiral.PNG)
 
+# Language Development
+
+## Translator Architecture
+
+![Translator Architecture](images/31_translator_arch.png)
+
+## Interfaces Between Modules
+
+*	**Main Program:** Is the module that ties the SIP Language altogether, it waits for user input to the invoke the sip Lexer and Parser to then finally start the code generation process.
 
 
 
