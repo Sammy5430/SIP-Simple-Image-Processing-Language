@@ -9,6 +9,16 @@ Currently, there are a variety of image processing features available across mul
 ![grammar](images/0_grammar.PNG)
 
 
+# Installation
+
+## Dependencies
+
+Make sure to have Python 3 version 3.6.5 installed and the following libraries installed:
+* PLY
+* Scipy
+* Numpy
+* Matplotlib
+* Scikit-image
 
 # Reference Manual
 
