@@ -112,7 +112,7 @@ All variables will only be images represented as arrays of numbers representing 
 
 
 **blur(LEVEL)**
-*	**Parameters:** Will require the user to input intensity of the blur in the form of medium, low or high.
+*	**Parameters:** Will require the user to input intensity LEVEL of the blur in the form of **medium**, **low** or **high**.
 *	**blur** – It will reduce image noise and reduce detail to the image this function is being used on. 
 
 **Example:**
@@ -123,7 +123,7 @@ All variables will only be images represented as arrays of numbers representing 
 
 
 **rotate(DIRECTION)**
-*	**Parameters:** Will require the user to input which direction would he like it to rotate to, right or left. 
+*	**Parameters:** Will require the user to input which DIRECTION would he like it to rotate to, **right** or **left**.
 *	**rotate** – Will rotate the image 90 degrees to the side that was input. 
 
 **Example:**
@@ -134,7 +134,7 @@ All variables will only be images represented as arrays of numbers representing 
 
 
 **edges(LEVEL)**
-*	**Parameters:** Will require the user to input intensity of the blur in the form of medium, low or high.
+*	**Parameters:** Will require the user to input intensity LEVEL of the blur in the form of **medium**, **low** or **high**.
 *	**edges** – Finds the boundaries of objects within the images. Works by detecting discontinuities in brightness. This method can only be called onto 2D images. 
 
 **Example:**
@@ -145,7 +145,7 @@ All variables will only be images represented as arrays of numbers representing 
 
 
 **sharpen(LEVEL)** 
-*	**Parameters:** Will require the user to input intensity of the blur in the form of medium, low or high.
+*	**Parameters:** Will require the user to input intensity level of the blur in the form of **medium**, **low** or **high**.
 *	**sharpen** – Emphasizes the texture and drawing viewer focus to the image. 
 
 **Example:**
@@ -155,7 +155,7 @@ All variables will only be images represented as arrays of numbers representing 
 
 
 
-**save(STRING)**
+**save(“FILENAME”)**
 *	**Parameters:** Will require the user to input the name of the new file to be saved as well as its image format between quotation marks. 
 *	**save** – Will save the copy of the image being used onto the project folder with the name given.
 
@@ -165,8 +165,8 @@ All variables will only be images represented as arrays of numbers representing 
 
 
 
-**resize(INT COMMA INT)**
-*	**Parameters:** Will require the user to input the Width and Height preferred onto the image. 
+**resize(height, width)**
+*	**Parameters:** Will require the user to input the Width and Height preferred onto the image, the width and height must be positive integers.
 *	**Resize** – Will resize the image to fit the dimensions used as parameters. 
 
 **Example:**
@@ -175,8 +175,8 @@ All variables will only be images represented as arrays of numbers representing 
 
 
 
-**crop(INT COMMA INT)**
-*	**Parameters:** Will require the user to input the Width and Height preferred onto the image.
+**crop(height, width)**
+*	**Parameters:** Will require the user to input the Width and Height preferred onto the image,the width and height must be positive integers.
 *	**Crop** - Crop with respect to the center of the image, parameters cannot be larger than the dimensions of the image.
 
 **Example:**
@@ -186,8 +186,8 @@ All variables will only be images represented as arrays of numbers representing 
 
 
 
-**spiral(INT COMMA INT)**
-*	**Parameters:** Will require the user to input the strength of the spiral and the radius onto which it will apply the spiral animation on the picture. 
+**spiral(strength, radius)**
+*	**Parameters:** Will require the user to input the strength of the spiral and the radius onto which it will apply the spiral animation on the picture; the width and height must be integers.
 *	**Spiral** – Will apply a spiral effect onto the image. 
 
 **Example:**
