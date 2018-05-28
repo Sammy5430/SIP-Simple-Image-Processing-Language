@@ -225,24 +225,40 @@ The following Programs were used in the development process of SIP Language:
 
 ## Test Methodology
 
-The modules in within SIP Lang where tested using **Blackbox Testing**, where testers provide the inputs and observe the outputs. If the output was incorrect with respect to their corresponding input, then further testing was done.
+The modules within SIP Lang where tested using **Blackbox Testing**, where testers provide the inputs and observe the outputs. If the output was incorrect with respect to their corresponding input, then further testing was done until it gives a valid output.
 
 ## Programs to Test Translator
 
-*	**Some Examples of the Programs to Test the Lexer :**
+**Some Examples of the Programs to Test the Lexer:**
 
 The objective of the programs to test the lexer was to see if the lexer applied correctly the regular expression and identified the token related to that regular expression.
 
-*	**Program 1:**
-Img = read(“new.jpg”)
-Img
-Sepia
-;;
-spiral(100,200)
-red()
-Owl = img
+**Program 1**
+![Program 1](images/32_prog1.png)
+
+**Program 2**
+![Program 2](images/33_prog2.png)
 
 
+**Some Examples of the Programs to the Test Parser:**
+
+The goals of these programs was to test the parser was to see if the parser could find a grammar rule that applied to the tokens that the lexer identified.
+
+**Program 3**
+![Program 3](images/34_prog3.png)
+
+**Program 4**
+![Program 4](images/35_prog4.png)
+
+**Some Examples of the Programs to Test the Complete SIP Language Translator:**
+
+The purpose of the programs to test the SIP translator was to see if our translator could identify which syntax that the user inputs is correct and that the corresponding piece of Intermediate code in SIP Language API executed successfully.
+
+**Program 5**
+![Program 5](images/36_prog5.png)
+
+**Program 6**
+![Program 6](images/37_prog6.png)
 
 
 # Conclusion
