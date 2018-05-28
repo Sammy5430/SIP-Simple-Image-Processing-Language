@@ -205,6 +205,44 @@ All variables will only be images represented as arrays of numbers representing 
 
 *	**Main Program:** Is the module that ties the SIP Language altogether, it waits for user input to the invoke the sip Lexer and Parser to then finally start the code generation process.
 
+*   **SIP Lexer:**  SIP Lexical analyzer was designed using the Library PLY. Here the token specifications are declared and the regular expression that is necessary to match the tokens given by the user when they input SIP code.
+
+*   **SIP Parser:** The SIP Parser was designed using PLY as well. The tokens received from the lexer to the parser, we need to determine if they follow the grammar rules of our language. This module is in charge of specifying the grammar rules using a Backus-Naur Form (BNF) Automata. After the parser deemed the user input as a valid grammar expression, then we can execute the corresponding intermediate code within SIP’s API.
+
+*   **SIP API:** This module was developed using the following python libraries: Scipy, Numpy, Matplotlib, and skimage. Here is where are intermediate code resides and it is executed depending on which grammar rule the parser identifies in the tokens that the user inputs. This is where the image transformations and operations occurs.
+
+*   **Python Libraries:**  The modules in yellow in the figure above are all the libraries used in SIP Lang, these are: Scipy, Numpy, Matplotlib, Skimage, and Ply.
+
+## Software Development Environment
+
+The following Programs were used in the development process of SIP Language:
+
+*	**PyCharm:** Is a Python IDE were we could write all develop, implement, and test, to make the SIP Language translator functional. In addition, the version of Python used in our code was Python 3.6.5.
+
+*   **Virtualenv:** Is a tool to create isolated python environments and it is also package manager that helps you install the dependencies in your project.
+
+*   **GitHub Desktop:** Is a version control software to share and monitor the code among our team of developers.
+
+## Test Methodology
+
+The modules in within SIP Lang where tested using **Blackbox Testing**, where testers provide the inputs and observe the outputs. If the output was incorrect with respect to their corresponding input, then further testing was done.
+
+## Programs to Test Translator
+
+*	**Some Examples of the Programs to Test the Lexer :**
+
+The objective of the programs to test the lexer was to see if the lexer applied correctly the regular expression and identified the token related to that regular expression.
+
+*	**Program 1:**
+Img = read(“new.jpg”)
+Img
+Sepia
+;;
+spiral(100,200)
+red()
+Owl = img
+
+
 
 
 # Conclusion
