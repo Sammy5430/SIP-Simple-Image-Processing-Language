@@ -3,12 +3,12 @@
 Currently, there are a variety of image processing features available across multiple programming languages. Many of them require a lot of lines of code or are hard to use due to the technical jargon that is associated with digital signal processing; which also makes the documentation difficult to understand. Our focus in this project is to develop a language that is straightforward for users that are not necessarily knowledgeable of image processing or digital signal processing in general. We expect that the learning curve for our proposed programming language is far from steep so that users can swiftly modify images as they want to. Users can do this by importing an image and applying a variety of operations to an image such as scaling, sharpening, and feature extraction via our programming language. Our proposed language will be implemented using PLY, the python scanner/parser tool that will allow us to create the straightforward syntax of SIP. The python libraries of Scipy and Numpy will be used since they will allow us to manipulate the vectors/matrices associated with the images while also having some toolboxes for image/signal processing. Finally, matplotlib will be used to render the images and display the effects that the user executed.
 
 
-# VIDEO TUTORIAL
+# Video Tutorial
 
 [![VIDEO TUTORIAL](images/00_thumbnail.PNG)](https://youtu.be/DRmtQ3VHD1g)
 
 
-# SIP GRAMMAR
+# SIP Grammar
 
 ![grammar](images/0_grammar.PNG)
 
