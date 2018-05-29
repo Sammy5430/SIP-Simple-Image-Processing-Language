@@ -11,9 +11,9 @@ Currently, there are a variety of image processing features available across mul
 
 Steps of how to use our programming language:
 
-1. Download SIP from our GitHub repository in the following link: https://sammy5430.github.io/SIP-Simple-Image-Processing-Language/
-2. Make sure to have Python 3 (3.6.5) installed in your computer, pip (python package manager comes included).
-3. Install the following python libraries using pip: PLY, Scipy, Numpy, Matplotlib, and Scikit-image.
+1. Download SIP from our GitHub repository with the following link: **https://sammy5430.github.io/SIP-Simple-Image-Processing-Language/**
+2. Make sure to have **Python 3 (3.6.5)** installed in your computer, pip (python package manager) comes included when downloading python.
+3. Install the following python libraries/packages using pip: **PLY 3.11**, **Scipy 1.0.1**, **Numpy 1.14.3**, **Matplotlib 2.2.2**, and **Scikit-image 0.13.1**.
 4. Run the sip.py file on your favourite IDE or terminal/command prompt
 5. Start using SIP Language
 
@@ -22,17 +22,6 @@ Steps of how to use our programming language:
 
 ![grammar](images/0_grammar.PNG)
 
-
-# Installation
-
-## Dependencies
-
-Make sure to have Python 3 version 3.6.5 installed and the following libraries installed:
-* PLY 3.11
-* Scipy 1.0.1
-* Numpy 1.14.3
-* Matplotlib 2.2.2
-* Scikit-image 0.13.1
 
 # Reference Manual
 
