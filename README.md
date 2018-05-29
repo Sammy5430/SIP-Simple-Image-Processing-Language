@@ -14,21 +14,21 @@ Currently, there are a variety of image processing features available across mul
 ## Dependencies
 
 Make sure to have Python 3 version 3.6.5 installed and the following libraries installed:
-* PLY
-* Scipy
-* Numpy
-* Matplotlib
-* Scikit-image
+* PLY 3.11
+* Scipy 1.0.1
+* Numpy 1.14.3
+* Matplotlib 2.2.2
+* Scikit-image 0.13.1
 
 # Reference Manual
 
 ## Types
 
 **2D Images**
-*	Also known as binary images, these types are only capable of performing tasks that do not require the image being modified to have 3 matrices represent them. Performing a wrong command will result in a warning explaining so. 
+*	Also known as binary images, these types are only capable of performing tasks that do not require the image being modified to have 3 dimensions represent them. Performing a wrong command will result in a warning explaining so.
 
 **3D Images**
-*	All types of images represented with 3 matrices, each representing their respective colors (RGB). 
+*	All types of images represented with 3 dimensions, each representing their respective colors (RGB).
 
 
 ## Variables
