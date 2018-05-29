@@ -7,6 +7,16 @@ Currently, there are a variety of image processing features available across mul
 
 [![VIDEO TUTORIAL](images/00_thumbnail.PNG)](https://youtu.be/DRmtQ3VHD1g)
 
+## Steps to Use our Language
+
+Steps of how to use our programming language:
+
+1. Download SIP from our GitHub repository in the following link: https://sammy5430.github.io/SIP-Simple-Image-Processing-Language/
+2. Make sure to have Python 3 (3.6.5) installed in your computer, pip (python package manager comes included).
+3. Install the following python libraries using pip: PLY, Scipy, Numpy, Matplotlib, and Scikit-image.
+4. Run the sip.py file on your favourite IDE or terminal/command prompt
+5. Start using SIP Language
+
 
 # SIP Grammar
 
@@ -76,7 +86,7 @@ All variables will only be images represented as arrays of numbers representing 
 
 
 **red()**
-*	Converts a 3D image to 2D by extracting only the red tones.
+*	Extracts only the red component of an RGB image.
 
 **Example:**
 
@@ -86,7 +96,7 @@ All variables will only be images represented as arrays of numbers representing 
 
 
 **green()**
-*	Converts a 3D image to 2D by extracting only the green tones.
+*	Extracts only the green component of an RGB image.
 
 **Example:**
 
@@ -96,7 +106,7 @@ All variables will only be images represented as arrays of numbers representing 
 
 
 **blue()**
-*	Converts a 3D image to 2D by extracting only the blue tones.
+*	Extracts only the blue component of an RGB image.
 
 **Example:**
 
@@ -148,7 +158,7 @@ All variables will only be images represented as arrays of numbers representing 
 
 
 **edges(LEVEL)**
-*	**Parameters:** Will require the user to input intensity LEVEL of the blur in the form of **medium**, **low** or **high**.
+*	**Parameters:** Will require the user to input intensity LEVEL of the edges in the form of **medium**, **low** or **high**.
 *	**edges** – Finds the boundaries of objects within the images. Works by detecting discontinuities in brightness. This method can only be called onto 2D images. 
 
 **Example:**
@@ -159,8 +169,8 @@ All variables will only be images represented as arrays of numbers representing 
 
 
 **sharpen(LEVEL)** 
-*	**Parameters:** Will require the user to input intensity level of the blur in the form of **medium**, **low** or **high**.
-*	**sharpen** – Emphasizes the texture and drawing viewer focus to the image. 
+*	**Parameters:** Will require the user to input intensity level of the sharpen in the form of **medium**, **low** or **high**.
+*	**sharpen** – Emphasizes the differences of value between neighboring pixels within the image.
 
 **Example:**
 
